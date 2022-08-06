@@ -13,61 +13,64 @@
 // tag::config-class[]
 package io.openliberty.guides.inventory;
 
+import java.util.Optional;
+import java.util.List;
+import java.util.OptionalInt;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Provider;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.Config;
+
 import io.openliberty.guides.config.Email;
+import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
-public class InventoryConfig {
+public class InventoryConfig {    
 
-  // tag::port-number[]
-  // tag::inject-port-number[]
   @Inject
-  // end::inject-port-number[]
-  // tag::guides-port-number[]
-  @ConfigProperty(name = "io_openliberty_guides_port_number")
-  // end::guides-port-number[]
-  private int portNumber;
+  @ConfigProperties
+  ConfigDetailsBean configDetails;
 
-  // end::port-number[]
-  // tag::build-in-converter[]
-  // tag::inject-inMaintenance[]
-  // tag::inject[]
   @Inject
-  // end::inject[]
-  // tag::configPropety[]
-  @ConfigProperty(name = "io_openliberty_guides_inventory_inMaintenance")
-  // end::configPropety[]
-  // end::inject-inMaintenance[]
-  private Provider<Boolean> inMaintenance;
-
-  // end::build-in-converter[]
-  // tag::custom-converter[]
-  @Inject
-  @ConfigProperty(name = "io_openliberty_guides_email")
-  private Provider<Email> email;
-  // end::custom-converter[]
+  Config config;
 
   // tag::getPortNumber[]
   public int getPortNumber() {
-    return portNumber;
+    return configDetails.port;
   }
   // end::getPortNumber[]
 
-  // tag::isInMaintenance[]
   public boolean isInMaintenance() {
     // tag::inMaintenanceGet[]
-    return inMaintenance.get();
+    return configDetails.inventory_inMaintenance;
     // end::inMaintenanceGet[]
   }
-  // end::isInMaintenance[]
 
   // tag::getEmail[]
   public Email getEmail() {
-    return email.get();
+    Optional<Email> email = configDetails.email;
+    if (email.isPresent()) {
+      return email.get();
+    }
+    return null;
   }
   // end::getEmail[]
+
+  public int getDowntime() {
+    OptionalInt downtime = configDetails.downtime;
+    if (downtime.isPresent()) {
+      return downtime.getAsInt();
+    }
+    return 0;
+  }
+
+  public List<Integer> getMaintenanceWindow() {
+    Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    if (maintenanceWindow.isPresent()) {
+      return maintenanceWindow.get();
+    }
+    return null;
+  }
 }
 // end::config-class[]

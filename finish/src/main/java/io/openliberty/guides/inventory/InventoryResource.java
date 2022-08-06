@@ -14,8 +14,8 @@
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
+import java.util.List;
 
-// CDI
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -60,8 +60,10 @@ public class InventoryResource {
       return Response.ok(props).build();
     } else {
       // tag::email[]
+      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently in maintenance. "
+                     .entity("{ \"error\" : \"Service is currently down for maintenance from " 
+                     + maintenanceWindow.get(0).toString() 
                      + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
       // end::email[]
@@ -77,8 +79,12 @@ public class InventoryResource {
       return Response.ok(manager.list()).build();
     } else {
       // tag::email[]
+      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently in maintenance. "
+                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
+                     + inventoryConfig.getDowntime() + " hours, from "
+                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
+                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
                      + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
       // end::getEmail[]

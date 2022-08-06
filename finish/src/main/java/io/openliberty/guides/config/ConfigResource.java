@@ -25,6 +25,8 @@ import jakarta.ws.rs.Produces;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.ConfigValue;
 
 @RequestScoped
 @Path("/")
@@ -35,12 +37,28 @@ public class ConfigResource {
   private Config config;
   // end::config[]
 
+  @Inject
+  @ConfigProperty(name = "io_openliberty_guides.technical_support")
+  ConfigValue technicalSupport_configValue;
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public JsonObject getAllConfig() {
     JsonObjectBuilder builder = Json.createObjectBuilder();
     return builder.add("ConfigSources", sourceJsonBuilder())
                   .add("ConfigProperties", propertyJsonBuilder()).build();
+  }
+
+  @GET
+  @Path("/technicalSupport")
+  @Produces(MediaType.APPLICATION_JSON)
+  public JsonObject getConfigValue() {
+    JsonObjectBuilder builder = Json.createObjectBuilder();
+    String sourceName = technicalSupport_configValue.getSourceName();
+    int sourceOrdinal = technicalSupport_configValue.getSourceOrdinal();
+
+    return builder.add("SourceName", sourceName)
+                  .add("SourceOrdinal", sourceOrdinal).build();
   }
 
   public JsonObject sourceJsonBuilder() {

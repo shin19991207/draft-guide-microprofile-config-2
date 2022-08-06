@@ -10,38 +10,64 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-package io.openliberty.guides.system;
+// tag::config-class[]
+package io.openliberty.guides.inventory;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-
 import jakarta.inject.Provider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.openliberty.guides.config.Email;
 
 @RequestScoped
-public class SystemConfig {
+public class InventoryConfig {
 
-  // tag::config[]
+  // tag::port-number[]
+  // tag::inject-port-number[]
   @Inject
-  @ConfigProperty(name = "io_openliberty_guides.system_inMaintenance")
-  Provider<Boolean> inMaintenance;
-  // end::config[]
+  // end::inject-port-number[]
+  // tag::guides-port-number[]
+  @ConfigProperty(name = "io_openliberty_guides.port")
+  // end::guides-port-number[]
+  private int portNumber;
 
+  // end::port-number[]
+  // tag::build-in-converter[]
+  // tag::inject-inMaintenance[]
+  // tag::inject[]
+  @Inject
+  // end::inject[]
+  // tag::configPropety[]
+  @ConfigProperty(name = "io_openliberty_guides.inventory_inMaintenance")
+  // end::configPropety[]
+  // end::inject-inMaintenance[]
+  private Provider<Boolean> inMaintenance;
+
+  // end::build-in-converter[]
   // tag::custom-converter[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
   private Provider<Email> email;
   // end::custom-converter[]
 
-  public boolean isInMaintenance() {
-    return inMaintenance.get();
+  // tag::getPortNumber[]
+  public int getPortNumber() {
+    return portNumber;
   }
+  // end::getPortNumber[]
+
+  // tag::isInMaintenance[]
+  public boolean isInMaintenance() {
+    // tag::inMaintenanceGet[]
+    return inMaintenance.get();
+    // end::inMaintenanceGet[]
+  }
+  // end::isInMaintenance[]
 
   // tag::getEmail[]
   public Email getEmail() {
     return email.get();
   }
   // end::getEmail[]
-
 }
+// end::config-class[]
