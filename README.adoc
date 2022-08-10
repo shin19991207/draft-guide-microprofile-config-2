@@ -94,17 +94,33 @@ The `-Dliberty.var.mp.config.profile` argument sets a https://maven.apache.org/p
 
 === Externalizing property on Config Source level
 
-// file 0
+// file 2
 microprofile-config.properties
 [source, properties, linenums, role='code_column']
 ----
 include::finish/src/main/resources/META-INF/microprofile-config-1.properties[]
 ----
 
-Now navigate to the src/main/resources/META-INF/microprofile-config.properties local configuration file to check some static configuration. This configuration file is the default configuration source for an application that uses MicroProfile Config.
+A [hotspot file=2]`microprofile-config.properties` property file has already been created in the `resources/META-INF` directory. This configuration file is the default configuration source for an application that uses MicroProfile Config.
 
+[role="code_command hotspot file=3", subs="quotes"]
+----
+#Create the `microprofile-config-maintaining.properties` file.#
+`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+----
+microprofile-config-maintaining.properties[source, properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
+----
+
+Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=3]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source `microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=3]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=3]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
 === Externalizing property on Property level
+
+Now navigate to the [hotspot file=2]`microprofile-config.properties` property file. 
+
+A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`.
+
 
 
 
