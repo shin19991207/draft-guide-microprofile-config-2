@@ -26,37 +26,52 @@ import jakarta.ws.rs.core.Response;
 
 import io.openliberty.guides.inventory.model.InventoryList;
 
-// tag::RequestScoped[]
 @RequestScoped
-// end::RequestScoped[]
 @Path("systems")
 public class InventoryResource {
 
-  // tag::Inject[]
-  @Inject InventoryManager manager;
-  // end::Inject[]
+  @Inject
+  InventoryManager manager;
+
+  @Inject
+  InventoryConfig inventoryConfig;
 
   @GET
   @Path("{hostname}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
-    // Get properties
-    Properties props = manager.get(hostname, 9080);
-    if (props == null) {
-      return Response.status(Response.Status.NOT_FOUND)
-                     .entity("{ \"error\" : \"Unknown hostname or the system service "
-                     + "may not be running on " + hostname + "\" }")
+
+    if (!inventoryConfig.isInMaintenance()) {
+      Properties props = manager.get(hostname, inventoryConfig.getPortNumber());
+      if (props == null) {
+        return Response.status(Response.Status.NOT_FOUND)
+                       .entity("{ \"error\" : \"Unknown hostname or the system service "
+                       + "may not be running on " + hostname + "\" }")
+                       .build();
+      }
+
+      // Add to inventory
+      manager.add(hostname, props);
+      return Response.ok(props).build();
+    } else {
+      return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                     .entity("{ \"error\" : \"Service is currently in maintenance. "
+                     + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
     }
-
-    // Add properties to inventory
-    manager.add(hostname, props);
-    return Response.ok(props).build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public InventoryList listContents() {
-    return manager.list();
+  public Response listContents() {
+    if (!inventoryConfig.isInMaintenance()) {
+      return Response.ok(manager.list()).build();
+    } else {
+      return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                     .entity("{ \"error\" : \"Service is currently in maintenance. "
+                     + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
+                     .build();
+    }
   }
+
 }

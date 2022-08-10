@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2019 IBM Corporation and others.
+ * Copyright (c) 2017, 2019 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,27 +12,16 @@
 // end::copyright[]
 package io.openliberty.guides.config;
 
-public class Email {
-  private String name;
-  private String domain;
+import org.eclipse.microprofile.config.spi.Converter;
+import io.openliberty.guides.config.Email;
 
-  public Email(String value) {
-    String[] components = value.split("@");
-    if (components.length == 2) {
-      name = components[0];
-      domain = components[1];
-    }
+// tag::customConfig[]
+public class CustomEmailConverter implements Converter<Email> {
+
+  @Override
+  public Email convert(String value) {
+    return new Email(value);
   }
 
-  public String getEmailName() {
-    return name;
-  }
-
-  public String getEmailDomain() {
-    return domain;
-  }
-
-  public String toString() {
-    return name + "@" + domain;
-  }
 }
+// end::customConfig[]

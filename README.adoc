@@ -117,6 +117,12 @@ Config Profile properties can be used at the Config Source level by providing a 
 
 A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=2]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=2]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
+
+
+
+
+
+
 // =================================================================================================
 // Injecting static configuration
 // =================================================================================================
