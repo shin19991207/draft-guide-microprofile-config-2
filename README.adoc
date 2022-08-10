@@ -116,19 +116,19 @@ include::finish/src/main/resources/META-INF/microprofile-config-maintaining.prop
 
 Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=1]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source `microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=1]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=1]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
-// === Externalizing property on Property level
+=== Externalizing property on Property level
 
-// A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
+A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
-// Because you started the Liberty server in dev mode at the beginning of this exercise, all the changes were automatically picked up.
+Because you started the Liberty server in dev mode at the beginning of this exercise, all the changes were automatically picked up.
 
-// Check out the `system` and `inventory` microservices at the following URLs:
+Check out the `system` and `inventory` microservices at the following URLs:
 
-// * http://localhost:9080/system/properties
+* http://localhost:9080/system/properties
 
-// * http://localhost:9080/inventory/systems
+* http://localhost:9080/inventory/systems
 
-// Because we started the application in the `maintaining` enviroment, the following message displays: `Service is currently in maintenance`.
+Because we started the application in the `maintaining` enviroment, the following message displays: `Service is currently in maintenance`.
 
 // =================================================================================================
 // Injecting static configuration
