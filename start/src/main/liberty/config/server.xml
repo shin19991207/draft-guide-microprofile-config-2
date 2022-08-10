@@ -17,6 +17,6 @@
   <httpEndpoint host="*" httpPort="${default.http.port}"
     httpsPort="${default.https.port}" id="defaultHttpEndpoint" />
 
-  <webApplication location="guide-microprofile-config.war"
+  <webApplication location="guide-microprofile-config-2.0.war"
     contextRoot="/" />
 </server>

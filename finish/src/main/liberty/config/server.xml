@@ -4,11 +4,13 @@
     <feature>restfulWS-3.0</feature>
     <feature>jsonb-2.0</feature>
     <feature>jsonp-2.0</feature>
-    <feature>cdi-3.0</feature>
     <feature>mpRestClient-3.0</feature>
     <!-- tag::config[] -->
     <feature>mpConfig-3.0</feature>
     <!-- end::config[] -->
+    <!-- tag::cdi[] -->
+    <feature>cdi-3.0</feature>
+    <!-- end::cdi[] -->
   </featureManager>
 
   <variable name="default.http.port" defaultValue="9080" />
@@ -19,6 +21,6 @@
 
   <variable name="io_openliberty_guides.technical_support" value="alice" />
 
-  <webApplication location="guide-microprofile-config.war"
+  <webApplication location="guide-microprofile-config-2.0.war"
     contextRoot="/" />
 </server>
