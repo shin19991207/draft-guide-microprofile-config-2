@@ -101,13 +101,15 @@ include::finish/src/main/resources/META-INF/microprofile-config-1.properties[]
 
 A [hotspot file=0]`microprofile-config.properties` property file has already been created in the `resources/META-INF` directory. This configuration file is the default configuration source for an application that uses MicroProfile Config.
 
-// file 1
 [role="code_command hotspot file=1", subs="quotes"]
 ----
 #Create the `microprofile-config-maintaining.properties` file.#
-`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+`src/main/resources/META-INF/microprofile-config-maintaining.properties`
 ----
-microprofile-config-maintaining.properties[source, properties, linenums, role='code_column']
+
+// file 1
+microprofile-config-maintaining.properties
+[source, properties, linenums, role='code_column']
 ----
 include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
