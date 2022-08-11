@@ -46,7 +46,7 @@ public class InventoryConfig {
   // end::build-in-converter[]
   // tag::custom-converter[]
   @Inject
-  @ConfigProperty(name = "io_openliberty_guides.email_address")
+  @ConfigProperty(name = "io_openliberty_guides.email")
   private Provider<Email> email;
   // end::custom-converter[]
 
