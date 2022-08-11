@@ -169,10 +169,40 @@ Try changing the configuration value for property [hotspot=role file=0]`role` in
 When you are finished trying out changing this configuration, change the value of property [hotspot=role file=0]`role` back to `technicalSupport`.
 
 // =================================================================================================
-// Configuring with the ConfigValue API
+// Injecting configuration using the ConfigValue metadata object
 // =================================================================================================
-== Configuring with the ConfigValue API
+== Injecting configuration using the ConfigValue metadata object
 
+// file 0
+microprofile-config-maintaining.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaning2.properties[]
+----
+
+// file 1
+bootstrap.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/main/liberty/config/bootstrap.properties[]
+----
+
+// file 2
+jvm.options
+[source, options, linenums, role='code_column']
+----
+include::finish/src/main/liberty/config/jvm.options[]
+----
+
+Note that the `io_openliberty_guides.technical_support` property is defined in multiple different config sources in the application as listed as follows:
+
+Note that the following five config sources all contain the `io_openliberty_guides.technical_support` property:
+
+* [hotspot=tech-support file=0]`microprofile-config-maintaining.properties`
+
+* [hotspot=tech-support file=1]`bootstrap.properties`
+
+* [hotspot=tech-support file=2]`jvm.options`
 
 
 // // =================================================================================================
