@@ -137,6 +137,14 @@ Because we started the application in the `maintaining` enviroment, the followin
 
 The value of a config property may contain an expression corresponding to another config property. Property Expressions provide a way to embed expression segments in property values using the `${}` sequence.
 
+Additionally, you can implement expressions with the following syntax:
+
+* `${prop:default}` - Provides a `default` value after the `:` if the expression doesn't find a value for the property `prop`.
+
+* `${prop${compose}}` - Composed expressions where inner expressions are resolved first.
+
+* `${prop1}${prop2}` - Multiple expressions.
+
 [role="code_command hotspot file=0", subs="quotes"]
 ----
 #Replace the `microprofile-config-maintaining.properties` file.#
@@ -150,87 +158,22 @@ microprofile-config-maintaining.properties
 include::finish/src/main/resources/META-INF/microprofile-config-maintaning2.properties[]
 ----
 
-// // =================================================================================================
-// // Injecting dynamic configuration
-// // =================================================================================================
-// == Injecting dynamic configuration
+When looking up the [hotspot=email file=0]`io_openliberty_guides.email` property, the value is expanded to `alice@guides.openliberty.io`.
 
-// Note that three default config sources mentioned above are static and fixed on application starting, so the properties within them cannot be modified while the server is running. However, you can externalize configuration data out of the application package, through the creation of custom configuration sources, so that the service updates configuration changes dynamically.
+Try changing the configuration value for property [hotspot=role file=0]`role` in the [hotspot file=0]`microprofile-config-maintaining.properties` file. Your changes are updated dynamically, and you do not need to restart the server. Refresh http://localhost:9080/config to observe the value of property [hotspot=email file=0]`io_openliberty_guides.email` at each change:
 
-// // =================================================================================================
-// // Creating custom configuration sources
-// // =================================================================================================
-// === Creating custom configuration sources
-// CustomConfigSource.json
-// [source, Json, linenums, role='code_column']
-// ----
-// include::finish/resources/CustomConfigSource.json[]
-// ----
+* Update the value of property [hotspot=role file=0]`role` to `customerSupport`. The value of `io_openliberty_guides.email` is resolved to `bob@guides.openliberty.io`.
 
-// Custom configuration sources can be created by implementing the `org.eclipse.microprofile.config.spi.ConfigSource` interface and using the `java.util.ServiceLoader` mechanism.
+* Update the value of property [hotspot=role file=0]`role` to `foo`. Since property `io_openliberty_guides.foo` does not exist, the deafult value `admin` is used. The value of `io_openliberty_guides.email` is then resolved to `admin@guides.openliberty.io`.
 
-// A [hotspot file=0]`CustomConfigSource.json` JSON file has already been created in the `resources` directory. This JSON file simulates a remote configuration resource in real life. This file contains 4 custom config properties and has an ordinal of [hotspot=2 file=0]`150`. To use these properties in the application, the data object needs to be transformed from this JSON file to the configuration for your application.
+When you are finished trying out changing this configuration, change the value of property [hotspot=role file=0]`role` back to `technicalSupport`.
 
-// To link this JSON file to your application and to implement the `ConfigSource` interface,
-
-// [role="code_command hotspot file=1", subs="quotes"]
-// ----
-// #Create the `CustomConfigSource` class.#
-// `src/main/java/io/openliberty/guides/config/CustomConfigSource.java`
-// ----
-// CustomConfigSource.java
-// [source, Java, linenums, role='code_column hide_tags=copyright']
-// ----
-// include::finish/src/main/java/io/openliberty/guides/config/CustomConfigSource.java[]
-// ----
-
-// The [hotspot=getProperties file=1]`getProperties()` method reads the key value pairs from the [hotspot file=0]`resources/CustomConfigSource.json` JSON file and writes the information into a map.
-
-// Finally, register the custom configuration source.
-
-// [role="code_command hotspot file=2", subs="quotes"]
-// ----
-// #Create the configuration file.#
-// `src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSource`
-// ----
-
-// org.eclipse.microprofile.config.spi.ConfigSource
-// [source, Java, linenums, role='code_column']
-// ----
-// include::finish/src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSource[]
-// ----
-
-// Add the fully qualified class name of the configuration source into it.
+// =================================================================================================
+// Configuring with the ConfigValue API
+// =================================================================================================
+== Configuring with the ConfigValue API
 
 
-// // =================================================================================================
-// // Enabling dynamic configuration injection
-// // =================================================================================================
-// === Enabling dynamic configuration injection
-
-// Now that the custom configuration source has successfully been set up, you can enable dynamic configuration injection of the properties being set in this ConfigSource. To enable this dynamic injection,
-
-// [role="code_command hotspot", subs="quotes"]
-// ----
-// #Replace the `InventoryConfig.java` class.#
-// `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
-// ----
-// InventoryConfig.java
-// [source, Java, linenums, role='code_column hide_tags=copyright,custom-converter,getEmail']
-// ----
-// include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
-// ----
-// Inject the [hotspot=inject-inMaintenance file=0]`io_openliberty_guides_inventory_inMaintenance` property, and add the [hotspot=isInMaintenance file=0]`isInMaintenance()` class method.
-
-// The [hotspot=inject file=0]`@Inject` and [hotspot=configPropety file=0]`@ConfigProperty` annotations inject the [hotspot=4 file=1]`io_openliberty_guides_inventory_inMaintenance` configuration property from the [hotspot file=1]`CustomConfigSource.json` file. The `Provider<>` interface used, forces the service to retrieve the inMaintenance value just in time. This retrieval of the value just in time makes the config injection dynamic and able to change without having to restart the application.
-
-// Every time that you invoke the [hotspot=inMaintenanceGet file=0]`inMaintenance.get()` method, the `Provider<>` interface picks up the latest value of the [hotspot=4 file=1]`io_openliberty_guides_inventory_inMaintenance` property from configuration sources.
-
-// CustomConfigSource.json
-// [source, Json, linenums, role='code_column']
-// ----
-// include::finish/resources/CustomConfigSource.json[]
-// ----
 
 // // =================================================================================================
 // // Creating custom converters
