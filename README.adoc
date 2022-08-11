@@ -108,7 +108,7 @@ A [hotspot file=0]`microprofile-config.properties` property file has already bee
 ----
 
 // file 1
-microprofile-config-maintaining1.properties
+microprofile-config-maintaining.properties
 [source, properties, linenums, role='code_column']
 ----
 include::finish/src/main/resources/META-INF/microprofile-config-maintaining1.properties[]
@@ -144,7 +144,7 @@ The value of a config property may contain an expression corresponding to anothe
 ----
 
 // file 0
-microprofile-config-maintaining2.properties
+microprofile-config-maintaining.properties
 [source, properties, linenums, role='code_column']
 ----
 include::finish/src/main/resources/META-INF/microprofile-config-maintaning2.properties[]
