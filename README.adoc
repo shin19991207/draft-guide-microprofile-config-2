@@ -194,6 +194,20 @@ jvm.options
 include::finish/src/main/liberty/config/jvm.options[]
 ----
 
+// file 3
+server.env
+[source, env, linenums, role='code_column']
+----
+include::finish/src/main/liberty/config/server.env[]
+----
+
+// file 4
+server.xml
+[source, xml, linenums, role='code_column']
+----
+include::finish/src/main/liberty/config/server.xml[]
+----
+
 Note that the `io_openliberty_guides.technical_support` property is defined in multiple different config sources in the application as listed as follows:
 
 Note that the following five config sources all contain the `io_openliberty_guides.technical_support` property:
@@ -204,6 +218,9 @@ Note that the following five config sources all contain the `io_openliberty_guid
 
 * [hotspot=tech-support file=2]`jvm.options`
 
+* [hotspot=tech-support file=3]`server.env`
+
+* [hotspot=tech-support file=4]`server.xml`
 
 // // =================================================================================================
 // // Creating custom converters
