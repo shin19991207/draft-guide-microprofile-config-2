@@ -39,7 +39,7 @@ public class ConfigResource {
 
   // tag::tech-support[]
   @Inject
-  @ConfigProperty(name = "io_openliberty_guides.technical_support")
+  @ConfigProperty(name = "io_openliberty_guides.technicalSupport")
   ConfigValue technicalSupport_configValue;
   // end::tech-support[]
 
@@ -61,7 +61,6 @@ public class ConfigResource {
     String sourceName = technicalSupport_configValue.getSourceName();
     // end::getSourceName[]
     int sourceOrdinal = technicalSupport_configValue.getSourceOrdinal();
-
     return builder.add("SourceName", sourceName)
                   .add("SourceOrdinal", sourceOrdinal).build();
   }

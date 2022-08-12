@@ -15,7 +15,6 @@ package io.openliberty.guides.inventory;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Provider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.openliberty.guides.config.Email;
 
@@ -41,13 +40,13 @@ public class InventoryConfig {
   @ConfigProperty(name = "io_openliberty_guides.inventory_inMaintenance")
   // end::configPropety[]
   // end::inject-inMaintenance[]
-  private Provider<Boolean> inMaintenance;
+  private Boolean inMaintenance;
 
   // end::build-in-converter[]
   // tag::custom-converter[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
-  private Provider<Email> email;
+  private Email email;
   // end::custom-converter[]
 
   // tag::getPortNumber[]
@@ -59,14 +58,14 @@ public class InventoryConfig {
   // tag::isInMaintenance[]
   public boolean isInMaintenance() {
     // tag::inMaintenanceGet[]
-    return inMaintenance.get();
+    return inMaintenance;
     // end::inMaintenanceGet[]
   }
   // end::isInMaintenance[]
 
   // tag::getEmail[]
   public Email getEmail() {
-    return email.get();
+    return email;
   }
   // end::getEmail[]
 }
