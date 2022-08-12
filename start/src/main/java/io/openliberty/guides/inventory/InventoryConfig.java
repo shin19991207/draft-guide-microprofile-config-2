@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::config-class[]
 package io.openliberty.guides.inventory;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -21,52 +20,27 @@ import io.openliberty.guides.config.Email;
 @RequestScoped
 public class InventoryConfig {
 
-  // tag::port-number[]
-  // tag::inject-port-number[]
   @Inject
-  // end::inject-port-number[]
-  // tag::guides-port-number[]
   @ConfigProperty(name = "io_openliberty_guides.port")
-  // end::guides-port-number[]
-  private int portNumber;
+  private int port;
 
-  // end::port-number[]
-  // tag::build-in-converter[]
-  // tag::inject-inMaintenance[]
-  // tag::inject[]
   @Inject
-  // end::inject[]
-  // tag::configPropety[]
   @ConfigProperty(name = "io_openliberty_guides.inventory_inMaintenance")
-  // end::configPropety[]
-  // end::inject-inMaintenance[]
   private Boolean inMaintenance;
 
-  // end::build-in-converter[]
-  // tag::custom-converter[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
   private Email email;
-  // end::custom-converter[]
 
-  // tag::getPortNumber[]
-  public int getPortNumber() {
-    return portNumber;
+  public int getPort() {
+    return port;
   }
-  // end::getPortNumber[]
 
-  // tag::isInMaintenance[]
   public boolean isInMaintenance() {
-    // tag::inMaintenanceGet[]
     return inMaintenance;
-    // end::inMaintenanceGet[]
   }
-  // end::isInMaintenance[]
 
-  // tag::getEmail[]
   public Email getEmail() {
     return email;
   }
-  // end::getEmail[]
 }
-// end::config-class[]

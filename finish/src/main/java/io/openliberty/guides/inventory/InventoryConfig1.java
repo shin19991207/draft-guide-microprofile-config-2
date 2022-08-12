@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::config-class[]
 package io.openliberty.guides.inventory;
 
 import java.util.Optional;
@@ -19,18 +18,25 @@ import java.util.OptionalInt;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.config.Config;
 
 import io.openliberty.guides.config.Email;
-import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class InventoryConfig {    
 
   @Inject
-  @ConfigProperties
-  ConfigDetailsBean configDetails;
+  @ConfigProperty(name = "io_openliberty_guides.port")
+  private int port;
+
+  @Inject
+  @ConfigProperty(name = "io_openliberty_guides.inventory_inMaintenance")
+  private Boolean inMaintenance;
+
+  @Inject
+  @ConfigProperty(name = "io_openliberty_guides.email")
+  private Email email;
 
   @Inject
   Config config;
@@ -40,27 +46,15 @@ public class InventoryConfig {
   }
 
   public boolean isInMaintenance() {
-    // tag::inMaintenanceGet[]
     return configDetails.inventory_inMaintenance;
-    // end::inMaintenanceGet[]
   }
 
-  // tag::getEmail[]
   public Email getEmail() {
     Optional<Email> email = configDetails.email;
     if (email.isPresent()) {
       return email.get();
     }
     return null;
-  }
-  // end::getEmail[]
-
-  public int getDowntime() {
-    OptionalInt downtime = configDetails.downtime;
-    if (downtime.isPresent()) {
-      return downtime.getAsInt();
-    }
-    return 0;
   }
 
   public List<Integer> getMaintenanceWindow() {
@@ -70,5 +64,13 @@ public class InventoryConfig {
     }
     return null;
   }
+
+  public int getDowntime() {
+    OptionalInt downtime = configDetails.downtime;
+    if (downtime.isPresent()) {
+      return downtime.getAsInt();
+    }
+    return 0;
+  }
+
 }
-// end::config-class[]

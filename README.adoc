@@ -252,35 +252,40 @@ Now point your browser to http://localhost:9080/config/technicalSupport to deter
 // =================================================================================================
 == Injecting multi-valued config property using the Config API
 
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the `microprofile-config-maintaning.properties` file.#
+`src/main/resources/META-INF/microprofile-config-maintaning.properties`
+----
 
+// file 0
+microprofile-config-maintaning.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaning3.properties[]
+----
+
+Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
+
+To retrieve the values from a multi-valued config property as a List,
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the `InventoryConfig.java` class.#
+`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+----
+
+// file 0
+InventoryConfig.java
+[source, java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig1.java[]
+----
 
 // // =================================================================================================
 // // Adding configuration to the service
 // // =================================================================================================
 // == Adding configuration to the microservice
-
-// To use externalized configuration in the `inventory` service,
-// [role="code_command hotspot", subs="quotes"]
-// ----
-// #Replace the `InventoryResource` class.#
-// `src/main/java/io/openliberty/guides/inventory/InventoryResource.java`
-// ----
-// InventoryResource.java
-// [source, Java, linenums, role='code_column hide_tags=copyright']
-// ----
-// include::finish/src/main/java/io/openliberty/guides/inventory/InventoryResource.java[]
-// ----
-// To add configuration to the `inventory` service, the [hotspot=config-injection file=0]`InventoryConfig` object is injected to the existing class.
-
-// The port number from the configuration is retrieved by the [hotspot=config-port file=0]`inventoryConfig.getPortNumber()` method and passed to the [hotspot=config-port file=0]`manager.get()` method as a parameter.
-
-// To determine whether the inventory service is in maintenance or not (according to the configuration value), [hotspot=isInMaintenance file=0]`inventoryConfig.isInMaintenance()` class method is used. If you set the [hotspot=4 file=1]`io_openliberty_guides_inventory_inMaintenance` property to `true` in the configuration, the inventory service returns the message, `ERROR: Service is currently in maintenance`, along with the contact email. The email configuration value can be obtained by calling [hotspot=getEmail file=0]`inventoryConfig.getEmail()` method.
-
-// CustomConfigSource.json
-// [source, Json, linenums, role='code_column']
-// ----
-// include::finish/resources/CustomConfigSource.json[]
-// ----
 
 
 // // =================================================================================================

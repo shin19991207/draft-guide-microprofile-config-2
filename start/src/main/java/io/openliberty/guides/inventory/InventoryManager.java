@@ -10,7 +10,6 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
-// tag::manager[]
 package io.openliberty.guides.inventory;
 
 import java.util.ArrayList;
@@ -27,8 +26,8 @@ public class InventoryManager {
   private List<SystemData> systems = Collections.synchronizedList(new ArrayList<>());
   private InventoryUtils invUtils = new InventoryUtils();
 
-  public Properties get(String hostname, int portNumber) {
-    return invUtils.getProperties(hostname, portNumber);
+  public Properties get(String hostname, int port) {
+    return invUtils.getProperties(hostname, port);
   }
 
   public void add(String hostname, Properties systemProps) {
@@ -47,4 +46,3 @@ public class InventoryManager {
   }
 
 }
-// end::manager[]

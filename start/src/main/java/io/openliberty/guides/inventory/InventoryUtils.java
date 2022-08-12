@@ -25,9 +25,8 @@ import jakarta.ws.rs.ProcessingException;
 
 public class InventoryUtils {
 
-  // tag::builder[]
-  public Properties getProperties(String hostname, int portNumber) {
-    String customURLString = "http://" + hostname + ":" + portNumber + "/system";
+  public Properties getProperties(String hostname, int port) {
+    String customURLString = "http://" + hostname + ":" + port + "/system";
     URL customURL = null;
     try {
       customURL = new URL(customURLString);
@@ -46,7 +45,6 @@ public class InventoryUtils {
     }
     return null;
   }
-  // end::builder[]
 
   public void handleProcessingException(ProcessingException ex) {
     Throwable rootEx = ex;

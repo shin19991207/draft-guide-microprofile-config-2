@@ -14,7 +14,6 @@ package io.openliberty.guides.inventory;
 
 import java.util.Properties;
 
-// CDI
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -42,7 +41,7 @@ public class InventoryResource {
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
 
     if (!inventoryConfig.isInMaintenance()) {
-      Properties props = manager.get(hostname, inventoryConfig.getPortNumber());
+      Properties props = manager.get(hostname, inventoryConfig.getPort());
       if (props == null) {
         return Response.status(Response.Status.NOT_FOUND)
                        .entity("{ \"error\" : \"Unknown hostname or the system service "
