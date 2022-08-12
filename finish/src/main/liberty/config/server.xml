@@ -20,7 +20,7 @@
     httpsPort="${default.https.port}" id="defaultHttpEndpoint" />
   
   <!-- tag::tech-support[] -->
-  <variable name="io_openliberty_guides.technical_support" value="alice" />
+  <variable name="io_openliberty_guides.technicalSupport" value="alice" />
   <!-- end::tech-support[] -->
 
   <webApplication location="guide-microprofile-config-2.war"

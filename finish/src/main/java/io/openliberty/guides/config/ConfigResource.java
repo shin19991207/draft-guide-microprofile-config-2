@@ -37,9 +37,11 @@ public class ConfigResource {
   private Config config;
   // end::config[]
 
+  // tag::tech-support[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.technical_support")
   ConfigValue technicalSupport_configValue;
+  // end::tech-support[]
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -52,14 +54,18 @@ public class ConfigResource {
   @GET
   @Path("/technicalSupport")
   @Produces(MediaType.APPLICATION_JSON)
-  public JsonObject getConfigValue() {
+  // tag::getConfigSource[]
+  public JsonObject getConfigSource() {
     JsonObjectBuilder builder = Json.createObjectBuilder();
+    // tag::getSourceName[]
     String sourceName = technicalSupport_configValue.getSourceName();
+    // end::getSourceName[]
     int sourceOrdinal = technicalSupport_configValue.getSourceOrdinal();
 
     return builder.add("SourceName", sourceName)
                   .add("SourceOrdinal", sourceOrdinal).build();
   }
+  // end::getConfigSource[]
 
   public JsonObject sourceJsonBuilder() {
     JsonObjectBuilder sourcesBuilder = Json.createObjectBuilder();

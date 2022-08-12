@@ -15,7 +15,7 @@
   <httpEndpoint host="*" httpPort="${default.http.port}"
     httpsPort="${default.https.port}" id="defaultHttpEndpoint" />
 
-  <variable name="io_openliberty_guides.technical_support" value="alice" />
+  <variable name="io_openliberty_guides.technicalSupport" value="john" />
 
   <webApplication location="guide-microprofile-config-2.war"
     contextRoot="/" />
