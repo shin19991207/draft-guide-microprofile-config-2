@@ -22,8 +22,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import io.openliberty.guides.config.Email;
 
+// tag::ConfigProperties[]
 @ConfigProperties(prefix = "io_openliberty_guides")
+// end::ConfigProperties[]
 @Dependent
+// tag::ConfigDetailsBean[]
 public class ConfigDetailsBean {
     public int port;
     public boolean inventory_inMaintenance;
@@ -32,3 +35,4 @@ public class ConfigDetailsBean {
     public Optional<List<Integer>> maintenanceWindow;
     public OptionalInt downtime;
 }
+// end::ConfigDetailsBean[]

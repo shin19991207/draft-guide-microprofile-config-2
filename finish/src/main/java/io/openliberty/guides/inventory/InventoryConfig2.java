@@ -26,9 +26,13 @@ import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class InventoryConfig {    
-
+  
+  // tag::Inject[]
   @Inject
+  // end::Inject[]
+  // tag::ConfigProperties[]
   @ConfigProperties
+  // end::ConfigProperties[]
   ConfigDetailsBean configDetails;
 
   @Inject
@@ -39,12 +43,9 @@ public class InventoryConfig {
   }
 
   public boolean isInMaintenance() {
-    // tag::inMaintenanceGet[]
     return configDetails.inventory_inMaintenance;
-    // end::inMaintenanceGet[]
   }
 
-  // tag::getEmail[]
   public Email getEmail() {
     Optional<Email> email = configDetails.email;
     if (email.isPresent()) {
@@ -52,7 +53,6 @@ public class InventoryConfig {
     }
     return null;
   }
-  // end::getEmail[]
 
   public int getDowntime() {
     OptionalInt downtime = configDetails.downtime;

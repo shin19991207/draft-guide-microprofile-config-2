@@ -36,21 +36,28 @@ public class InventoryConfig {
 
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
-  private Email email;
+  private Optional<Email> email;
 
   @Inject
+  @ConfigProperty(name = "io_openliberty_guides.downtime")
+  // tag::downtime[]
+  private OptionalInt downtime;
+  // end::downtime[]
+
+  // tag::config[]
+  @Inject
   Config config;
+  // end::config[]
 
   public int getPort() {
-    return configDetails.port;
+    return port;
   }
 
   public boolean isInMaintenance() {
-    return configDetails.inventory_inMaintenance;
+    return inMaintenance;
   }
 
   public Email getEmail() {
-    Optional<Email> email = configDetails.email;
     if (email.isPresent()) {
       return email.get();
     }
@@ -58,7 +65,9 @@ public class InventoryConfig {
   }
 
   public List<Integer> getMaintenanceWindow() {
+    // tag::getOptionalValues[]
     Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    // end::getOptionalValues[]
     if (maintenanceWindow.isPresent()) {
       return maintenanceWindow.get();
     }
@@ -66,7 +75,6 @@ public class InventoryConfig {
   }
 
   public int getDowntime() {
-    OptionalInt downtime = configDetails.downtime;
     if (downtime.isPresent()) {
       return downtime.getAsInt();
     }

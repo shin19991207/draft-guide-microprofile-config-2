@@ -46,9 +46,9 @@ The application that you will be working with is an `inventory` service which st
 include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
-// Specifying Config Profile
+// Configuring and Activating stage-specific Config Profile
 // =================================================================================================
-== Activating stage-specific Config Profile
+== Configuring and Activating stage-specific Config Profile
 
 // static guide instructions:
 Now, navigate to the `start` directory to begin.
@@ -248,9 +248,9 @@ For example, the [hotspot=getConfigSource file=5]`getConfigSource()` method dete
 Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
 
 // =================================================================================================
-// Injecting multi-valued config property using the Config API
+// Injecting multi-valued config property using Config API
 // =================================================================================================
-== Injecting multi-valued config property using the Config API
+== Injecting multi-valued config property using Config API
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -267,13 +267,29 @@ include::finish/src/main/resources/META-INF/microprofile-config-maintaning3.prop
 
 Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
 
-To retrieve the values from a multi-valued config property as a List,
+To retrieve the values from this multi-valued config property as a List,
 
-[role="code_command hotspot file=0", subs="quotes"]
+[role="code_command hotspot file=1", subs="quotes"]
 ----
 #Replace the `InventoryConfig.java` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
 ----
+
+// file 1
+InventoryConfig.java
+[source, java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig1.java[]
+----
+
+Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an `Optional<List<Integer>>` type is returned.
+
+You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
+
+// =================================================================================================
+// Using the new built-in Converters
+// =================================================================================================
+== Using the new built-in Converters
 
 // file 0
 InventoryConfig.java
@@ -282,93 +298,69 @@ InventoryConfig.java
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig1.java[]
 ----
 
-// // =================================================================================================
-// // Adding configuration to the service
-// // =================================================================================================
-// == Adding configuration to the microservice
+// file 1
+microprofile-config-maintaning.properties
+[source, properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaning3.properties[]
+----
 
+MicroProfile Config API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined tye with the new Converters like any of the existing built-in Converters.
 
-// // =================================================================================================
-// // Building and running the application
-// // =================================================================================================
+An example of using the new Converter has been provided for you in the [hotspot file=0]`InventoryConfig.java` class. The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. This allows its value to be retrieve "optionally" when the property is not defined. Therefore, the application won't throw a `NoSuchElementException` when it is stated in the default enviroment (Note that property [hotspot=downtime file=0]`io_openliberty_guides.downtime` is only defined in the [hotspot file=1]`maintaining` environment but not in the original environment).
 
-// [role=command]
-// include::{common-includes}/devmode-build.adoc[]
+// You can specify a value in the runtime environment for mandatory configuration properties. Properties are mandatory when the annotation does not specify an optional default value. When the mandatory configuration property value is not found in any of the ConfigSources, a NoSuchElementException is thrown during application startup.
 
-// // static guide instructions:
-// ifndef::cloud-hosted[]
-// While the server is running, the following two microservices should be available to access:
+// =================================================================================================
+// Injecting related properties through @ConfigProperties annotation
+// =================================================================================================
+== Injecting related properties through @ConfigProperties annotation
 
-// * http://localhost:9080/system/properties[http://localhost:9080/system/properties^]
+MicroProfile Config 2.0 provides a way to aggregate configuration properties starting with the same prefix into a single property class through the `@ConfigProperties` annotation.
 
-// * http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^]
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `ConfigDetailsBean.java` class.#
+`src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java`
+----
 
+// file 0
+ConfigDetailsBean.java
+[source, java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java[]
+----
 
-// You can find the service that retrieves configuration information that is specific to this guide at the following location:
+Define a CDI bean for config properties which share the common prefix `io_openliberty_guides`.
 
-// * http://localhost:9080/config[http://localhost:9080/config^]
-// endif::[]
+The [hotspot=ConfigProperties file=0]`@ConfigProperties` annotation retrieves the properties prefixed by `io_openliberty_guides` into a single property class called [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean`.
 
-// // cloud-hosted guide instructions:
-// ifdef::cloud-hosted[]
-// While the server is running, run the following curl command to access the ***system*** microservice:
-// ```bash
-// curl -s http://localhost:9080/system/properties | jq
-// ```
+To inject the bean annotated with `@ConfigProperties`, 
 
-// and run the following curl command to access the ***inventory*** microservice:
-// ```bash
-// curl -s http://localhost:9080/inventory/systems | jq
-// ```
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Replace the `InventoryConfig.java` class.#
+`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+----
 
-// You can find the service that retrieves configuration information that is specific to this guide by running the following curl command:
-// ```bash
-// curl -s http://localhost:9080/config | jq
-// ```
-// endif::[]
+// file 1
+InventoryConfig.java
+[source, java, linenums, role='code_column']
+----
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig2.java[]
+----
 
-// The [hotspot=2 file=0]`config_ordinal` value of the custom configuration source is set to [hotspot=2 file=0]`150`. It overrides configuration values of the default [hotspot file=1]`microprofile-config.properties` source, which has a [hotspot=ordinal file=1]`config_ordinal` value of [hotspot=ordinal file=1]`100`.
+Inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class with the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations.
 
-// CustomConfigSource.json
-// [source, Json, linenums, role='code_column']
-// ----
-// include::finish/resources/CustomConfigSource.json[]
-// ----
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+== Testing the application
 
-// microprofile-config.properties
-// [source, properties, linenums, role='code_column']
-// ----
-// include::finish/src/main/resources/META-INF/microprofile-config.properties[]
-// ----
-
-// // static guide instructions:
-// ifndef::cloud-hosted[]
-// Play with this application by changing configuration values for each property in the [hotspot file=0]`resources/CustomConfigSource.json` file. Your changes are added dynamically, and you do not need to restart the server. Refresh http://localhost:9080/config[http://localhost:9080/config^] to see the dynamic changes.
-
-// For example, change [hotspot=4 file=0]`io_openliberty_guides_inventory_inMaintenance` from `false` to `true`, then try to access http://localhost:9080/inventory/systems[http://localhost:9080/inventory/systems^] again. The following message displays: `ERROR: Service is currently in maintenance`.
-// endif::[]
-
-// // cloud-hosted guide instructions:
-// ifdef::cloud-hosted[]
-// Play with this application by changing configuration values for each property in the ***resources/CustomConfigSource.json*** file. Your changes are added dynamically, and you do not need to restart the server. Rerun the following curl command to see the dynamic changes:
-// ```bash
-// curl -s http://localhost:9080/config | jq
-// ```
-
-// For example, change ***io_openliberty_guides_inventory_inMaintenance*** from ***false*** to ***true***, then try to access http://localhost:9080/inventory/systems again by running the following curl command:
-// ```bash
-// curl -s http://localhost:9080/inventory/systems | jq
-// ```
-
-// The following message displays: ***ERROR: Service is currently in maintenance***.
-// endif::[]
-
-
-// // =================================================================================================
-// // Testing the application
-// // =================================================================================================
-
-// == Testing the application
+// =================================================================================================
+// Testing the application
+// =================================================================================================
+== Testing the application
 
 // [role="code_command hotspot", subs="quotes"]
 // ----

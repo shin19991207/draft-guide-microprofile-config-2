@@ -62,8 +62,10 @@ public class InventoryResource {
       // tag::email[]
       List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently down for maintenance from " 
-                     + maintenanceWindow.get(0).toString() 
+                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
+                     + inventoryConfig.getDowntime() + " hours, from "
+                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
+                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
                      + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
       // end::email[]
