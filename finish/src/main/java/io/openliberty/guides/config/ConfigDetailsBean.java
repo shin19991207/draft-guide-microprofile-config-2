@@ -20,8 +20,6 @@ import jakarta.enterprise.context.Dependent;
 
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 
-import io.openliberty.guides.config.Email;
-
 // tag::ConfigProperties[]
 @ConfigProperties(prefix = "io_openliberty_guides")
 // end::ConfigProperties[]
@@ -31,7 +29,7 @@ public class ConfigDetailsBean {
     public int port;
     public boolean inventory_inMaintenance;
     public boolean system_inMaintenance;
-    public Optional<Email> email;
+    public Optional<String> email;
     public Optional<List<Integer>> maintenanceWindow;
     public OptionalInt downtime;
 }

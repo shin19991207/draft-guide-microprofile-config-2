@@ -20,15 +20,21 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.eclipse.microprofile.config.Config;
+//
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+//
 
-import io.openliberty.guides.config.Email;
 import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class InventoryConfig {    
-
+  
+  // tag::Inject[]
   @Inject
+  // end::Inject[]
+  // tag::ConfigProperties[]
   @ConfigProperties
+  // end::ConfigProperties[]
   ConfigDetailsBean configDetails;
 
   @Inject
@@ -39,20 +45,16 @@ public class InventoryConfig {
   }
 
   public boolean isInMaintenance() {
-    // tag::inMaintenanceGet[]
     return configDetails.inventory_inMaintenance;
-    // end::inMaintenanceGet[]
   }
 
-  // tag::getEmail[]
-  public Email getEmail() {
-    Optional<Email> email = configDetails.email;
+  public String getEmail() {
+    Optional<String> email = configDetails.email;
     if (email.isPresent()) {
       return email.get();
     }
     return null;
   }
-  // end::getEmail[]
 
   public int getDowntime() {
     OptionalInt downtime = configDetails.downtime;

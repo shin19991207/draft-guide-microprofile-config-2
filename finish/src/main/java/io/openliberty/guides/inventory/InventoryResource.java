@@ -25,8 +25,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-
-
 @RequestScoped
 @Path("systems")
 public class InventoryResource {
@@ -66,7 +64,7 @@ public class InventoryResource {
                      + inventoryConfig.getDowntime() + " hours, from "
                      + maintenanceWindow.get(0).toString() + ":00 UTC to " 
                      + maintenanceWindow.get(1).toString() + ":00 UTC. " 
-                     + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
+                     + "Contact: " + inventoryConfig.getEmail() + "\" }")
                      .build();
       // end::email[]
     }

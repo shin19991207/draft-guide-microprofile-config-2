@@ -19,7 +19,6 @@ import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 
-import io.openliberty.guides.config.Email;
 import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
@@ -34,8 +33,8 @@ public class SystemConfig {
   }
 
   // tag::getEmail[]
-  public Email getEmail() {
-    Optional<Email> email = configDetails.email;
+  public String getEmail() {
+    Optional<String> email = configDetails.email;
     if (email.isPresent()) {
       return email.get();
     }
