@@ -94,9 +94,9 @@ The `-Dliberty.var.mp.config.profile` argument sets a https://maven.apache.org/p
 
 // file 0
 microprofile-config.properties
-[source, properties, linenums, role='code_column']
+[source, Properties, linenums, role='code_column']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-1.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
 A [hotspot file=0]`microprofile-config.properties` property file has already been created in the `resources/META-INF` directory. This configuration file is the default configuration source for an application that uses MicroProfile Config.
@@ -109,9 +109,9 @@ A [hotspot file=0]`microprofile-config.properties` property file has already bee
 
 // file 1
 microprofile-config-maintaining.properties
-[source, properties, linenums, role='code_column']
+[source, properties, linenums, role='code_column hide_tags=role,tech-support,customer-support,email2,maintenanceWindow,downtime']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaining1.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
 Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=1]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source `microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=1]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=1]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
@@ -153,9 +153,9 @@ Additionally, you can implement expressions with the following syntax:
 
 // file 0
 microprofile-config-maintaining.properties
-[source, properties, linenums, role='code_column']
+[source, Properties, linenums, role='code_column hide_tags=email1,maintenanceWindow,downtime']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaning2.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
 When looking up the [hotspot=email file=0]`io_openliberty_guides.email` property, the value is expanded to `alice@guides.openliberty.io`.
@@ -175,35 +175,35 @@ When you are finished trying out changing this configuration, change the value o
 
 // file 0
 microprofile-config-maintaining.properties
-[source, properties, linenums, role='code_column']
+[source, Properties, linenums, role='code_column hide_tags=email1,maintenanceWindow,downtime']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaning2.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
 // file 1
 bootstrap.properties
-[source, properties, linenums, role='code_column']
+[source, Properties, linenums, role='code_column']
 ----
 include::finish/src/main/liberty/config/bootstrap.properties[]
 ----
 
 // file 2
 jvm.options
-[source, options, linenums, role='code_column']
+[source, Options, linenums, role='code_column']
 ----
 include::finish/src/main/liberty/config/jvm.options[]
 ----
 
 // file 3
 server.env
-[source, env, linenums, role='code_column']
+[source, ENV, linenums, role='code_column']
 ----
 include::finish/src/main/liberty/config/server.env[]
 ----
 
 // file 4
 server.xml
-[source, xml, linenums, role='code_column']
+[source, XML, linenums, role='code_column']
 ----
 include::finish/src/main/liberty/config/server.xml[]
 ----
@@ -254,15 +254,15 @@ Now point your browser to http://localhost:9080/config/technicalSupport to deter
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Replace the `microprofile-config-maintaning.properties` file.#
-`src/main/resources/META-INF/microprofile-config-maintaning.properties`
+#Replace the `microprofile-config-maintaining.properties` file.#
+`src/main/resources/META-INF/microprofile-config-maintaining.properties`
 ----
 
 // file 0
-microprofile-config-maintaning.properties
-[source, properties, linenums, role='code_column']
+microprofile-config-maintaining.properties
+[source, Properties, linenums, role='code_column hide_tags=email1']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaning3.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
 Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
@@ -299,10 +299,10 @@ include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig1.j
 ----
 
 // file 1
-microprofile-config-maintaning.properties
-[source, properties, linenums, role='code_column']
+microprofile-config-maintaining.properties
+[source, Properties, linenums, role='code_column hide_tags=email1']
 ----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaning3.properties[]
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
 MicroProfile Config API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined tye with the new Converters like any of the existing built-in Converters.
@@ -347,7 +347,7 @@ To inject the bean annotated with `@ConfigProperties`,
 InventoryConfig.java
 [source, java, linenums, role='code_column']
 ----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig2.java[]
+include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
 Inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class with the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations.
