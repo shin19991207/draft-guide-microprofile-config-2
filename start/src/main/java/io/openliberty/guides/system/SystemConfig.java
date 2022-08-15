@@ -16,7 +16,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import io.openliberty.guides.config.Email;
 
 @RequestScoped
 public class SystemConfig {
@@ -30,7 +29,7 @@ public class SystemConfig {
   // tag::custom-converter[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
-  private Email email;
+  private String email;
   // end::custom-converter[]
 
   public boolean isInMaintenance() {
@@ -38,7 +37,7 @@ public class SystemConfig {
   }
 
   // tag::getEmail[]
-  public Email getEmail() {
+  public String getEmail() {
     return email;
   }
   // end::getEmail[]
