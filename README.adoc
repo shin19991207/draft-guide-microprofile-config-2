@@ -195,13 +195,6 @@ include::finish/src/main/liberty/config/jvm.options[]
 ----
 
 // file 3
-server.env
-[source, ENV, linenums, role='code_column']
-----
-include::finish/src/main/liberty/config/server.env[]
-----
-
-// file 4
 server.xml
 [source, XML, linenums, role='code_column']
 ----
@@ -218,9 +211,7 @@ Note that the following five config sources all contain the `io_openliberty_guid
 
 * [hotspot=tech-support file=2]`jvm.options`
 
-* [hotspot=tech-support file=3]`server.env`
-
-* [hotspot=tech-support file=4]`server.xml`
+* [hotspot=tech-support file=3]`server.xml`
 
 To figure out where the value of property `io_openliberty_guides.technical_support` comes from, 
 
@@ -230,7 +221,7 @@ To figure out where the value of property `io_openliberty_guides.technical_suppo
 `src/main/java/io/openliberty/guides/config/ConfigResource.java`
 ----
 
-// file 5
+// file 4
 ConfigResource.java
 [source, java, linenums, role='code_column']
 ----
@@ -239,11 +230,11 @@ include::finish/src/main/java/io/openliberty/guides/config/ConfigResource.java[]
 
 The ConfigValue holds additional information after the lookup of a configuration property.
 
-To use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/ConfigValue.html[ConfigValue API class^], inject the [hotspot=tech-support file=5]`io_openliberty_guides.technical_support` property as usual, only this time define the type as `ConfigValue`.
+To use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/ConfigValue.html[ConfigValue API class^], inject the [hotspot=tech-support file=4]`io_openliberty_guides.technical_support` property as usual, only this time define the type as `ConfigValue`.
 
 The `ConfigValue` holds additional information after the lookup of a config property, where you can retrieve with the get methods defined in the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/[Javadoc^].
 
-For example, the [hotspot=getConfigSource file=5]`getConfigSource()` method determines which ConfigSource has the highest ordinal for property `io_openliberty_guides.technical_support` by calling the [hotspot=getSourceName file=5]`getSourceName()` method.
+For example, the [hotspot=getConfigSource file=4]`getConfigSource()` method determines which ConfigSource has the highest ordinal for property `io_openliberty_guides.technical_support` by calling the [hotspot=getSourceName file=4]`getSourceName()` method.
 
 Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
 
@@ -282,7 +273,7 @@ InventoryConfig.java
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig1.java[]
 ----
 
-Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an `Optional<List<Integer>>` type is returned.
+Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=optional-list-int file=1]`Optional<List<Integer>>` type is returned.
 
 You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
@@ -305,11 +296,11 @@ microprofile-config-maintaining.properties
 include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
-MicroProfile Config API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined tye with the new Converters like any of the existing built-in Converters.
+MicroProfile Config 2.0 API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined type with the new Converters like any of the existing built-in Converters.
 
-An example of using the new Converter has been provided for you in the [hotspot file=0]`InventoryConfig.java` class. The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. This allows its value to be retrieve "optionally" when the property is not defined. Therefore, the application won't throw a `NoSuchElementException` when it is stated in the default enviroment (Note that property [hotspot=downtime file=0]`io_openliberty_guides.downtime` is only defined in the [hotspot file=1]`maintaining` environment but not in the original environment).
+An example of using the new Converter has been provided for you in the [hotspot file=0]`InventoryConfig.java` class. The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. 
 
-// You can specify a value in the runtime environment for mandatory configuration properties. Properties are mandatory when the annotation does not specify an optional default value. When the mandatory configuration property value is not found in any of the ConfigSources, a NoSuchElementException is thrown during application startup.
+Properties are optional when the annotation specify an optional default value. In this case, the `OptionalInt` Converter converts the value of property [hotspot=downtime file=0]`io_openliberty_guides.downtime` to `null` as the default value. This allows its value to be retrieve "optionally". That is, when the configuration property value is not found in any of the ConfigSources in the current runtime environment, an `Optional.empty` value will be returned instead of a `NoSuchElementException`. 
 
 // =================================================================================================
 // Injecting related properties through @ConfigProperties annotation
@@ -350,28 +341,50 @@ InventoryConfig.java
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
-Inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class with the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations.
+The changes introduced here use the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations to inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class into the [hotspot file=1]`InventoryConfig` class.
+
+// To add configuration to the `inventory` microservice, the [hotspot file=1]`InventoryConfig` object is injected to the existing class.
+
+
+
+// =================================================================================================
+// Running the application
+// =================================================================================================
+
+[role=command]
+include::{common-includes}/devmode-build.adoc[]
+
+While the server is running, the following two microservices should be available to access:
+
+* http://localhost:9080/system/properties
+
+* http://localhost:9080/inventory/systems
+
+Since you started the server in the `maintaining` environment which set both services in maintenance, the following message displays when accessing both endpoints: `... Service is currently in maintenance ...`.
+
+Play with this application by changing configuration values for each property in the `resources/META-INF/microprofile-config-maintaining.properties` file. Your changes are added dynamically, and you do not need to restart the server. Refresh the URLs to see the dynamic changes on the error message.
+
+You can find the service that retrieves configuration information that is specific to this guide at the following location:
+
+* http://localhost:9080/config
 
 // =================================================================================================
 // Testing the application
 // =================================================================================================
 == Testing the application
 
-// =================================================================================================
-// Testing the application
-// =================================================================================================
-== Testing the application
+[role="code_command hotspot", subs="quotes"]
+----
+#Create the `ConfigurationIT` class.#
+`src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java`
+----
 
-// [role="code_command hotspot", subs="quotes"]
-// ----
-// #Create the `ConfigurationIT` class.#
-// `src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java`
-// ----
-// ConfigurationIT.java
-// [source, Java, linenums, role='code_column hide_tags=copyright']
-// ----
-// include::finish/src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java[]
-// ----
+// file 0
+ConfigurationIT.java
+[source, Java, linenums, role='code_column hide_tags=copyright']
+----
+include::finish/src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java[]
+----
 
 // microprofile-config.properties
 // [source, properties, linenums, role='code_column']

@@ -40,7 +40,7 @@ public class ConfigResource {
   // tag::tech-support[]
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.technicalSupport")
-  ConfigValue technicalSupport_configValue;
+  private ConfigValue technicalSupport_configValue;
   // end::tech-support[]
 
   @GET
