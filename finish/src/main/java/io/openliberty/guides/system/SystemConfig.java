@@ -13,11 +13,14 @@
 package io.openliberty.guides.system;
 
 import java.util.Optional;
+import java.util.List;
+import java.util.OptionalInt;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.Config;
 
 import io.openliberty.guides.config.ConfigDetailsBean;
 
@@ -28,11 +31,13 @@ public class SystemConfig {
   @ConfigProperties
   ConfigDetailsBean configDetails;
 
+  @Inject
+  Config config;
+
   public boolean isInMaintenance() {
     return configDetails.system_inMaintenance;
   }
 
-  // tag::getEmail[]
   public String getEmail() {
     Optional<String> email = configDetails.email;
     if (email.isPresent()) {
@@ -40,6 +45,21 @@ public class SystemConfig {
     }
     return null;
   }
-  // end::getEmail[]
+
+  public int getDowntime() {
+    OptionalInt downtime = configDetails.downtime;
+    if (downtime.isPresent()) {
+      return downtime.getAsInt();
+    }
+    return 0;
+  }
+
+  public List<Integer> getMaintenanceWindow() {
+    Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    if (maintenanceWindow.isPresent()) {
+      return maintenanceWindow.get();
+    }
+    return null;
+  }
 
 }
