@@ -43,9 +43,7 @@ public class InventoryResource {
   public Response getPropertiesForHost(@PathParam("hostname") String hostname) {
 
     if (!inventoryConfig.isInMaintenance()) {
-      // tag::config-port[]
       Properties props = manager.get(hostname, inventoryConfig.getPort());
-      // end::config-port[]
       if (props == null) {
         return Response.status(Response.Status.NOT_FOUND)
                        .entity("{ \"error\" : \"Unknown hostname or the system service "
@@ -53,11 +51,9 @@ public class InventoryResource {
                        .build();
       }
 
-      // Add to inventory
       manager.add(hostname, props);
       return Response.ok(props).build();
     } else {
-      // tag::email[]
       List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
                      .entity("{ \"error\" : \"Service is currently down for maintenance for "
@@ -66,19 +62,15 @@ public class InventoryResource {
                      + maintenanceWindow.get(1).toString() + ":00 UTC. " 
                      + "Contact: " + inventoryConfig.getEmail() + "\" }")
                      .build();
-      // end::email[]
     }
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response listContents() {
-    // tag::isInMaintenance[]
     if (!inventoryConfig.isInMaintenance()) {
-    // end::isInMaintenance[]
       return Response.ok(manager.list()).build();
     } else {
-      // tag::email[]
       List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
                      .entity("{ \"error\" : \"Service is currently down for maintenance for "
@@ -87,10 +79,7 @@ public class InventoryResource {
                      + maintenanceWindow.get(1).toString() + ":00 UTC. " 
                      + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
-      // end::getEmail[]
     }
   }
 
 }
-
-// end::config-methods[]
