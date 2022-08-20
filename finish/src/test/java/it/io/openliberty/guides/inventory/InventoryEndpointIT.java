@@ -16,6 +16,10 @@ package it.io.openliberty.guides.inventory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.client.Client;
@@ -36,16 +40,22 @@ public class InventoryEndpointIT {
 
   private static String port;
   private static String baseUrl;
-
   private Client client;
+  private static boolean status;
+
+  private static String USER_DIR = System.getProperty("user.dir");
+  private static String DEFAULT_CONFIG_FILE = USER_DIR
+      + "/src/main/resources/META-INF/microprofile-config.properties";
 
   private final String SYSTEM_PROPERTIES = "system/properties";
   private final String INVENTORY_SYSTEMS = "inventory/systems";
+
 
   @BeforeAll
   public static void oneTimeSetup() {
     port = System.getProperty("default.http.port");
     baseUrl = "http://localhost:" + port + "/";
+    status = serviceInMaintenance();
   }
 
   @BeforeEach
@@ -63,26 +73,28 @@ public class InventoryEndpointIT {
   @Order(1)
   // tag::testHostRegistration[]
   public void testHostRegistration() {
-    this.visitLocalhost();
+    if (!status) {
+      this.visitLocalhost();
 
-    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    this.assertResponse(baseUrl, response);
+      Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
+      this.assertResponse(baseUrl, response);
 
-    JsonObject obj = response.readEntity(JsonObject.class);
+      JsonObject obj = response.readEntity(JsonObject.class);
 
-    JsonArray systems = obj.getJsonArray("systems");
+      JsonArray systems = obj.getJsonArray("systems");
 
-    boolean localhostExists = false;
-    for (int n = 0; n < systems.size(); n++) {
-      localhostExists = systems.getJsonObject(n).get("hostname").toString()
-          .contains("localhost");
-      if (localhostExists) {
-        break;
+      boolean localhostExists = false;
+      for (int n = 0; n < systems.size(); n++) {
+        localhostExists = systems.getJsonObject(n).get("hostname").toString()
+            .contains("localhost");
+        if (localhostExists) {
+          break;
+        }
       }
-    }
-    assertTrue(localhostExists, "A host was registered, but it was not localhost");
+      assertTrue(localhostExists, "A host was registered, but it was not localhost");
 
-    response.close();
+      response.close();
+    }
   }
   // end::testHostRegistration[]
 
@@ -90,28 +102,30 @@ public class InventoryEndpointIT {
   @Order(2)
   // tag::testSystemPropertiesMatch[]
   public void testSystemPropertiesMatch() {
-    Response invResponse = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    Response sysResponse = this.getResponse(baseUrl + SYSTEM_PROPERTIES);
+    if (!status) {
+      Response invResponse = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
+      Response sysResponse = this.getResponse(baseUrl + SYSTEM_PROPERTIES);
 
-    this.assertResponse(baseUrl, invResponse);
-    this.assertResponse(baseUrl, sysResponse);
+      this.assertResponse(baseUrl, invResponse);
+      this.assertResponse(baseUrl, sysResponse);
 
-    JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
-        .getJsonArray("systems").getJsonObject(0).get("properties");
+      JsonObject jsonFromInventory = (JsonObject) invResponse.readEntity(JsonObject.class)
+          .getJsonArray("systems").getJsonObject(0).get("properties");
 
-    JsonObject jsonFromSystem = sysResponse.readEntity(JsonObject.class);
+      JsonObject jsonFromSystem = sysResponse.readEntity(JsonObject.class);
 
-    String osNameFromInventory = jsonFromInventory.getString("os.name");
-    String osNameFromSystem = jsonFromSystem.getString("os.name");
-    this.assertProperty("os.name", "localhost", osNameFromSystem, osNameFromInventory);
+      String osNameFromInventory = jsonFromInventory.getString("os.name");
+      String osNameFromSystem = jsonFromSystem.getString("os.name");
+      this.assertProperty("os.name", "localhost", osNameFromSystem, osNameFromInventory);
 
-    String userNameFromInventory = jsonFromInventory.getString("user.name");
-    String userNameFromSystem = jsonFromSystem.getString("user.name");
-    this.assertProperty("user.name", "localhost", userNameFromSystem,
-        userNameFromInventory);
+      String userNameFromInventory = jsonFromInventory.getString("user.name");
+      String userNameFromSystem = jsonFromSystem.getString("user.name");
+      this.assertProperty("user.name", "localhost", userNameFromSystem,
+          userNameFromInventory);
 
-    invResponse.close();
-    sysResponse.close();
+      invResponse.close();
+      sysResponse.close();
+    }
   }
   // end::testSystemPropertiesMatch[]
 
@@ -119,27 +133,56 @@ public class InventoryEndpointIT {
   @Order(3)
   // tag::testUnknownHost[]
   public void testUnknownHost() {
-    Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
-    this.assertResponse(baseUrl, response);
+    if (!status) {
+      Response response = this.getResponse(baseUrl + INVENTORY_SYSTEMS);
+      this.assertResponse(baseUrl, response);
 
-    Response badResponse = client
-        .target(baseUrl + INVENTORY_SYSTEMS + "/" + "badhostname")
-        .request(MediaType.APPLICATION_JSON).get();
+      Response badResponse = client
+          .target(baseUrl + INVENTORY_SYSTEMS + "/" + "badhostname")
+          .request(MediaType.APPLICATION_JSON).get();
 
-    assertEquals(404, badResponse.getStatus(),
-    "BadResponse expected status: 404. Response code not as expected.");
+      assertEquals(404, badResponse.getStatus(),
+      "BadResponse expected status: 404. Response code not as expected.");
 
-    String stringObj = badResponse.readEntity(String.class);
-    assertTrue(stringObj.contains("error"),
-    "badhostname is not a valid host but it didn't raise an error");
+      String stringObj = badResponse.readEntity(String.class);
+      assertTrue(stringObj.contains("error"),
+      "badhostname is not a valid host but it didn't raise an error");
 
-    response.close();
-    badResponse.close();
+      response.close();
+      badResponse.close();
+    }
   }
   // end::testUnknownHost[]
   // end::tests[]
+  
   // tag::helpers[]
   // tag::javadoc[]
+  /**
+   * Check if mp.config.profile=maintaining in the deafult microporofile-config.properties file.
+   */
+  // end::javadoc[]
+  public static boolean serviceInMaintenance() {
+    String line = "";
+    try {
+      File f = new File(DEFAULT_CONFIG_FILE);
+      if (f.exists()) {
+        BufferedReader reader = new BufferedReader(new FileReader(f));
+        while ((line = reader.readLine()) != null) {
+          if (line.contains("mp.config.profile") && !line.contains("#")
+              && line.split("=")[1].equals("maintaining")) {
+            return true;
+          }
+        }
+        reader.close();
+        return false; // "mp.config.profile" does not exist in DEFAULT_CONFIG_FILE
+      } else {
+        return false; // DEFAULT_CONFIG_FILE does not exist
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
 
   /**
    * <p>

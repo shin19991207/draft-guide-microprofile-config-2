@@ -16,12 +16,15 @@ package it.io.openliberty.guides.config;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.	assertTrue;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.Response;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,30 +39,21 @@ public class ConfigurationIT {
   private static String port;
   private static String baseUrl;
   private static Client client;
+  private static boolean status;
 
-  private static String INVENTORY_HOSTS = "inventory/systems";
-  private static String CONFIG_TECHNICALSUPPORT = "config/technicalSupport";
   private static String USER_DIR = System.getProperty("user.dir");
   private static String DEFAULT_CONFIG_FILE = USER_DIR
       + "/src/main/resources/META-INF/microprofile-config.properties";
-  private static String MAINTAINING_CONFIG_FILE = USER_DIR
-      + "/src/main/resources/META-INF/microprofile-config-maintaining.properties";
+
+  private final String CONFIG_TECHNICALSUPPORT = "config/technicalSupport";
+  private final String INVENTORY_SYSTEMS = "inventory/systems";
+  private final String SYSTEM_PROPERTIES = "system/properties";
 
   @BeforeAll
-  // tag::setup[]
-  public static void oneTimeSetup() {
+  public static void onetimeSetup() {
     port = System.getProperty("default.http.port");
     baseUrl = "http://localhost:" + port + "/";
-
-    ConfigITUtil.switchMaintainingEnvironment(DEFAULT_CONFIG_FILE, true);
-
-    client = ClientBuilder.newClient();
-  }
-  // end::setup[]
-
-  @AfterAll
-  public static void allTeardown() {
-    ConfigITUtil.switchMaintainingEnvironment(DEFAULT_CONFIG_FILE, false);
+    status = serviceInMaintenance();
   }
 
   @BeforeEach
@@ -74,44 +68,78 @@ public class ConfigurationIT {
 
   @Test
   @Order(1)
-  public void testInventoryInMaintenance() {
-    String error = ConfigITUtil.getStringFromURL(client, baseUrl + INVENTORY_HOSTS);
-
-    assertEquals(
-         "{ \"error\" : \"Service is currently down for maintenance for "
-        + "3 hours, from 13:00 UTC to 16:00 UTC. " 
-        + "Contact: alice@guides.openliberty.io\" }",
-        error, "The inventory service should be down");
-  } 
-
-  @Test
-  @Order(2)
-  public void testRoleCustomerSupport() {
-    ConfigITUtil.appendFile(MAINTAINING_CONFIG_FILE, "role=customerSupport");
-
-    String error = ConfigITUtil.getStringFromURL(client, baseUrl + INVENTORY_HOSTS);
-
-    assertEquals(
-         "{ \"error\" : \"Service is currently down for maintenance for "
-        + "3 hours, from 13:00 UTC to 16:00 UTC. " 
-        + "Contact: bob@guides.openliberty.io\" }",
-        error, "The contact email should be bob@guides.openliberty.io");
-
-    ConfigITUtil.removeLastLineFromFile(MAINTAINING_CONFIG_FILE);
-  } 
-
-  @Test
-  @Order(3)
   public void testConfigTechnicalSupport() {
-    Response response = ConfigITUtil.getResponse(client, baseUrl + CONFIG_TECHNICALSUPPORT);
+    Response response = getResponse(client, baseUrl + CONFIG_TECHNICALSUPPORT);
     JsonObject obj = response.readEntity(JsonObject.class);
 
     assertTrue(
       obj.getString("SourceName").contains("server.xml"), 
-      "The SourceName should contain server.xml");
-
-    response.close();
+      "The SourceName should be server.xml");
   } 
 
+  @Test
+  @Order(2)
+  public void testInventoryServiceStatus() {
+    Response response = getResponse(client, baseUrl + INVENTORY_SYSTEMS);
+
+    if (!status) {
+      int expected = Response.Status.OK.getStatusCode();
+      int actual = response.getStatus();
+      assertEquals(expected, actual);
+    } else {
+      assertEquals(503, response.getStatus(),
+      "Response code not as expected.");
+    }
+  } 
+  
+  @Test
+  @Order(3)
+  public void testSystemServiceStatus() {
+    Response response = getResponse(client, baseUrl + SYSTEM_PROPERTIES);
+
+    if (!status) {
+      int expected = Response.Status.OK.getStatusCode();
+      int actual = response.getStatus();
+      assertEquals(expected, actual);
+    } else {
+      assertEquals(503, response.getStatus(),
+      "Response code not as expected.");
+    }
+  } 
+
+  // tag::helpers[]
+  // tag::javadoc[]
+  /**
+   * Check if mp.config.profile=maintaining in the deafult microporofile-config.properties file.
+   */
+  // end::javadoc[]
+  public static boolean serviceInMaintenance() {
+    String line = "";
+    try {
+      File f = new File(DEFAULT_CONFIG_FILE);
+      if (f.exists()) {
+        BufferedReader reader = new BufferedReader(new FileReader(f));
+        while ((line = reader.readLine()) != null) {
+          if (line.contains("mp.config.profile") && !line.contains("#")
+              && line.split("=")[1].equals("maintaining")) {
+            return true;
+          }
+        }
+        reader.close();
+        return false; // "mp.config.profile" does not exist in DEFAULT_CONFIG_FILE
+      } else {
+        return false; // DEFAULT_CONFIG_FILE does not exist
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+public static Response getResponse(Client client, String url) {
+    Response response = client.target(url).request().get();
+    return response;
+  }
+// end::helpers[]
+
 }
-// end::test[]
