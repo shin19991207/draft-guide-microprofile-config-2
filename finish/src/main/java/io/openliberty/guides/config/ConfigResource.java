@@ -77,7 +77,9 @@ public class ConfigResource {
   public JsonObject propertyJsonBuilder() {
     JsonObjectBuilder propertiesBuilder = Json.createObjectBuilder();
     for (String name : config.getPropertyNames()) {
-      if (name.contains("io_openliberty_guides")) {
+      if (name.contains("io_openliberty_guides") 
+      || name.equals("mp.config.profile") 
+      || name.equals("role")) {
         propertiesBuilder.add(name, config.getValue(name, String.class));
       }
     }
