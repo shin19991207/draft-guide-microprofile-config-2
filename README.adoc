@@ -34,7 +34,7 @@ You will learn how to externalize and inject static configuration properties for
 
 MicroProfile Config 2.0 is a major version release jam-packed with new features to help make building configurable microservices effortless.
 
-You will learn to switch between different project phases using specific set of configuration properties for each phase, embed config property values inside of other config property values, retrieve details about a given config property, retrieve multi-valued config property values as a List, and inject related config property values with a shared prefix into a CDI bean.
+You will learn to switch between different project environment using specific set of configuration properties for each environment, embed config property values inside of other config property values, retrieve details about a given config property, retrieve multi-valued config property values as a List, and inject related config property values with a shared prefix into a CDI bean.
 
 The application that you will be working with is an `inventory` service which stores the information about various JVMs running on different hosts. Whenever a request is made to the `inventory` service to retrieve the JVM system properties of a particular host, the `inventory` service will communicate with the `system` service on that host to get these system properties. You will add configuration properties to simulate if a service is down for maintenance.
 
@@ -49,9 +49,6 @@ include::{common-includes}/gitclone.adoc[]
 // Configuring and Activating stage-specific Config Profile
 // =================================================================================================
 == Configuring and Activating stage-specific Config Profile
-
-// static guide instructions:
-Now, navigate to the `start` directory to begin.
 
 // file 0
 pom.xml
@@ -69,28 +66,45 @@ include::finish/src/main/liberty/config/server.xml[]
 
 The MicroProfile Config 2.0 API is included in the MicroProfile 5.0 API artifact that is specified in your [hotspot file=0]`pom.xml` file. Look for the dependency with the [hotspot=microprofile file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config 2.0 API to externalize configurations for your microservices. The [hotspot=config file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`src/main/liberty/config/server.xml` file, along with the [hotspot=cdi file=1]`cdi` feature to enable all the injection functionally.
 
-Config Profiles allow configuration for different environments and project phases such as dev, testing, prod, etc. while only a single profile is active. The active Config Profile is specified via the property `mp.config.profile`, which can be set in any of the configuration sources or at application startup. Once it is set, the corresponding set of configuration properties associated with the active profile are used. 
+Config Profiles allow configuration for different environments and project phases such as dev, testing, prod, etc. while only a single profile is active. The active Config Profile is specified via the property `mp.config.profile`, which can be set in any of the configuration sources. Once it is set, the corresponding set of configuration properties associated with the active profile are used. 
 
-When you run Open Liberty in development mode, known as dev mode, the server listens for file changes and automatically recompiles and deploys your updates whenever you save a new change. Run the following goal to start Open Liberty in dev mode with the `maintaining` environment:
+It can also be set at your application startup. The `finish` directory in the root of this guide contains the finished application. Try out the application in the maintenance mode by setting the Config Profile as `maintaining` when starting your application.
 
-[role=command]
+// tag::runCommand[]
+To try out the application, first go to the `finish` directory and run the following Maven goal to build the application and deploy it to Open Liberty:
+
+[role='command']
 ```
-mvn liberty:dev -Dliberty.var.mp.config.profile="maintaining"
+cd finish
+mvn liberty:run -Dliberty.var.mp.config.profile="maintaining"
 ```
 
-After you see the following message, your application server in dev mode is ready:
+After you see the following message, your application server is ready:
 
 [role="no_copy"]
 ----
-**************************************************************
-*    Liberty is running in dev mode.
+The defaultServer server is ready to run a smarter planet.
 ----
-
-Dev mode holds your command-line session to listen for file changes. Open another command-line session to continue, or open the project in your editor.
+// end::runCommand[]
 
 The `-Dliberty.var.mp.config.profile` argument sets a https://maven.apache.org/pom.html#Properties[Maven property^] which the [hotspot=liberty-maven-plugin file=0]`liberty-maven-plugin` https://github.com/scottkurz/ci.maven/blob/f3920800351b6d2c26e62a19008b68093afa48ea/docs/common-server-parameters.md#setting-liberty-configuration-with-maven-project-properties[uses to update the Liberty configuration^]. In this case, the `mp.config.profile property` is set to `maintaining`.
 
-=== Externalizing property on Config Source level
+You can access the following two microservices to test their availability:
+
+* http://localhost:9080/system/properties
+
+* http://localhost:9080/inventory/systems 
+
+Both services returns the message `...Service is currently down for maintenance...` as the application is started in the `maintaining` environment.
+
+[role=command]
+include::{common-includes}/twyb-end.adoc[]
+
+// static guide instructions:
+Now, navigate to the `start` directory to begin.
+
+[role=command]
+include::{common-includes}/devmode-lmp33-start.adoc[]
 
 // file 0
 microprofile-config.properties
@@ -99,7 +113,9 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-A [hotspot file=0]`microprofile-config.properties` property file has already been created in the `resources/META-INF` directory. This configuration file is the default configuration source for an application that uses MicroProfile Config.
+The active Config Profile is specified as [hotspot=config-profile file=0]`maintaining` in the [hotspot file=0]`resources/META-INF/microprofile-config.properties` property file, the default configuration source for an application that uses MicroProfile Config.
+
+=== Externalizing property on Config Source level
 
 [role="code_command hotspot file=1", subs="quotes"]
 ----
@@ -119,16 +135,6 @@ Config Profile properties can be used at the Config Source level by providing a 
 === Externalizing property on Property level
 
 A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
-
-Because you started the Liberty server in dev mode at the beginning of this exercise, all the changes were automatically picked up.
-
-Check out the `system` and `inventory` microservices at the following URLs:
-
-* http://localhost:9080/system/properties
-
-* http://localhost:9080/inventory/systems
-
-Because we started the application in the `maintaining` enviroment, the following message displays: `Service is currently in maintenance`.
 
 // =================================================================================================
 // Working with Property Expressions

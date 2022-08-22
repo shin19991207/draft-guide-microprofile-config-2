@@ -20,25 +20,22 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.eclipse.microprofile.config.Config;
-//
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-//
 
 import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class InventoryConfig {    
-  
-  // tag::Inject[]
+
+  @Inject
+  Config config;
+
+   // tag::Inject[]
   @Inject
   // end::Inject[]
   // tag::ConfigProperties[]
   @ConfigProperties
   // end::ConfigProperties[]
   ConfigDetailsBean configDetails;
-
-  @Inject
-  Config config;
 
   public int getPort() {
     return configDetails.port;
@@ -73,4 +70,5 @@ public class InventoryConfig {
     }
     return null;
   }
+  
 }
