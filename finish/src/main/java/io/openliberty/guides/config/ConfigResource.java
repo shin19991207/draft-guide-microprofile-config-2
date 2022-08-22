@@ -61,8 +61,10 @@ public class ConfigResource {
     String sourceName = technicalSupport_configValue.getSourceName();
     // end::getSourceName[]
     int sourceOrdinal = technicalSupport_configValue.getSourceOrdinal();
+    String value = technicalSupport_configValue.getValue();
     return builder.add("SourceName", sourceName)
-                  .add("SourceOrdinal", sourceOrdinal).build();
+                  .add("SourceOrdinal", sourceOrdinal)
+                  .add("Value", value).build();
   }
   // end::getConfigSource[]
 

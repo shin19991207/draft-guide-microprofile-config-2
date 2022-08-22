@@ -68,6 +68,7 @@ public class ConfigurationIT {
 
   @Test
   @Order(1)
+  // tag::testConfigTechnicalSupport[]
   public void testConfigTechnicalSupport() {
     Response response = getResponse(client, baseUrl + CONFIG_TECHNICALSUPPORT);
     JsonObject obj = response.readEntity(JsonObject.class);
@@ -76,9 +77,11 @@ public class ConfigurationIT {
       obj.getString("SourceName").contains("server.xml"), 
       "The SourceName should be server.xml");
   } 
+  // end::testConfigTechnicalSupport[]
 
   @Test
   @Order(2)
+  // tag::testInventoryServiceStatus[]
   public void testInventoryServiceStatus() {
     Response response = getResponse(client, baseUrl + INVENTORY_SYSTEMS);
 
@@ -91,9 +94,11 @@ public class ConfigurationIT {
       "Response code not as expected.");
     }
   } 
+  // tag::testInventoryServiceStatus[]
   
   @Test
   @Order(3)
+  // tag::testSystemServiceStatus[]
   public void testSystemServiceStatus() {
     Response response = getResponse(client, baseUrl + SYSTEM_PROPERTIES);
 
@@ -106,6 +111,7 @@ public class ConfigurationIT {
       "Response code not as expected.");
     }
   } 
+  // tag::testSystemServiceStatus[]
 
   // tag::helpers[]
   // tag::javadoc[]

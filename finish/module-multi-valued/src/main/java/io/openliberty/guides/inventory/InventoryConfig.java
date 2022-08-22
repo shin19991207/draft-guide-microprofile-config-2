@@ -18,35 +18,46 @@ import java.util.OptionalInt;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.config.Config;
-
-import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class InventoryConfig {    
 
   @Inject
-  Config config;
+  @ConfigProperty(name = "io_openliberty_guides.port")
+  private int port;
 
-  // tag::Inject[]
   @Inject
-  // end::Inject[]
-  // tag::ConfigProperties[]
-  @ConfigProperties
-  // end::ConfigProperties[]
-  ConfigDetailsBean configDetails;
+  @ConfigProperty(name = "io_openliberty_guides.inventory_inMaintenance")
+  private Boolean inMaintenance;
+
+  @Inject
+  @ConfigProperty(name = "io_openliberty_guides.email")
+  private Optional<String> email;
+
+  // tag::inject-downtime[]
+  @Inject
+  @ConfigProperty(name = "io_openliberty_guides.downtime")
+  // tag::downtime[]
+  private OptionalInt downtime;
+  // end::downtime[]
+  // end::inject-downtime[]
+
+  // tag::config[]
+  @Inject
+  Config config;
+  // end::config[]
 
   public int getPort() {
-    return configDetails.port;
+    return port;
   }
 
   public boolean isInMaintenance() {
-    return configDetails.inventory_inMaintenance;
+    return inMaintenance;
   }
 
   public String getEmail() {
-    Optional<String> email = configDetails.email;
     if (email.isPresent()) {
       return email.get();
     }
@@ -54,21 +65,22 @@ public class InventoryConfig {
   }
 
   public List<Integer> getMaintenanceWindow() {
-    // tag::optional-list-int[]
+    // tag::getOptionalValues[]
     Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
-    // end::optional-list-int[]
+    // end::getOptionalValues[]
     if (maintenanceWindow.isPresent()) {
       return maintenanceWindow.get();
     }
     return null;
   }
 
+  // tag::getDowntime[]
   public int getDowntime() {
-    OptionalInt downtime = configDetails.downtime;
     if (downtime.isPresent()) {
       return downtime.getAsInt();
     }
     return 0;
   }
-  
+  // end::getDowntime[]
+
 }
