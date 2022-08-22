@@ -130,7 +130,6 @@ Navigate to the [hotspot file=0]`microprofile-config.properties` property file. 
 
 === Externalizing property on Config Source level
 
-
 [role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `microprofile-config-maintaining.properties` file.#
@@ -240,7 +239,7 @@ Note that the following five config sources all contain the `io_openliberty_guid
 
 To figure out where the value of property `io_openliberty_guides.technical_support` comes from, 
 
-[role="code_command hotspot file=5", subs="quotes"]
+[role="code_command hotspot file=4", subs="quotes"]
 ----
 #Replace the `ConfigResource.java` file.#
 `src/main/java/io/openliberty/guides/config/ConfigResource.java`
@@ -263,220 +262,220 @@ For example, the [hotspot=getConfigSource file=4]`getConfigSource()` method dete
 
 Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
 
-// =================================================================================================
-// Injecting multi-valued config property using Config API
-// =================================================================================================
-== Injecting multi-valued config property using Config API
+// // =================================================================================================
+// // Injecting multi-valued config property using Config API
+// // =================================================================================================
+// == Injecting multi-valued config property using Config API
 
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the `microprofile-config-maintaining.properties` file.#
-`src/main/resources/META-INF/microprofile-config-maintaining.properties`
-----
+// [role="code_command hotspot file=0", subs="quotes"]
+// ----
+// #Replace the `microprofile-config-maintaining.properties` file.#
+// `src/main/resources/META-INF/microprofile-config-maintaining.properties`
+// ----
 
-// file 0
-microprofile-config-maintaining.properties
-[source, Properties, linenums, role='code_column hide_tags=email1']
-----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
-----
+// // file 0
+// microprofile-config-maintaining.properties
+// [source, Properties, linenums, role='code_column hide_tags=email1']
+// ----
+// include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
+// ----
 
-Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
+// Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
 
-To retrieve the values from this multi-valued config property as a List,
+// To retrieve the values from this multi-valued config property as a List,
 
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Replace the `InventoryConfig.java` class.#
-`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
-----
+// [role="code_command hotspot file=1", subs="quotes"]
+// ----
+// #Replace the `InventoryConfig.java` class.#
+// `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+// ----
 
-// file 1
-InventoryConfig.java
-[source, java, linenums, role='code_column hide_tags=inject-downtime,getDowntime']
-----
-include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
-----
+// // file 1
+// InventoryConfig.java
+// [source, java, linenums, role='code_column hide_tags=inject-downtime,getDowntime']
+// ----
+// include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
+// ----
 
-Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=optional-list-int file=1]`Optional<List<Integer>>` type is returned.
+// Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=optional-list-int file=1]`Optional<List<Integer>>` type is returned.
 
-You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
+// You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
-// =================================================================================================
-// Using the new built-in Converters
-// =================================================================================================
-== Using the new built-in Converters
+// // =================================================================================================
+// // Using the new built-in Converters
+// // =================================================================================================
+// == Using the new built-in Converters
 
-// file 0
-InventoryConfig.java
-[source, Java, linenums, role='code_column']
-----
-include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
-----
+// // file 0
+// InventoryConfig.java
+// [source, Java, linenums, role='code_column']
+// ----
+// include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
+// ----
 
-// file 1
-microprofile-config-maintaining.properties
-[source, Properties, linenums, role='code_column hide_tags=email1']
-----
-include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
-----
+// // file 1
+// microprofile-config-maintaining.properties
+// [source, Properties, linenums, role='code_column hide_tags=email1']
+// ----
+// include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
+// ----
 
-MicroProfile Config 2.0 API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined type with the new Converters like any of the existing built-in Converters.
+// MicroProfile Config 2.0 API now provides `OptinalInt`, `OptionalLong` and `OptionalDouble` as https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in Converters^]. You can convert injected config property values to a defined type with the new Converters like any of the existing built-in Converters.
 
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the `InventoryConfig.java` class.#
-`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
-----
+// [role="code_command hotspot file=0", subs="quotes"]
+// ----
+// #Replace the `InventoryConfig.java` class.#
+// `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+// ----
 
-The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. 
+// The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. 
 
-Properties are optional when the annotation specify an optional default value. In this case, the `OptionalInt` Converter converts the value of property [hotspot=downtime file=0]`io_openliberty_guides.downtime` to `null` as the default value. This allows its value to be retrieve "optionally". That is, when the configuration property value is not found in any of the ConfigSources in the current runtime environment, an `Optional.empty` value will be returned instead of a `NoSuchElementException`. 
+// Properties are optional when the annotation specify an optional default value. In this case, the `OptionalInt` Converter converts the value of property [hotspot=downtime file=0]`io_openliberty_guides.downtime` to `null` as the default value. This allows its value to be retrieve "optionally". That is, when the configuration property value is not found in any of the ConfigSources in the current runtime environment, an `Optional.empty` value will be returned instead of a `NoSuchElementException`. 
 
-// =================================================================================================
-// Injecting related properties through @ConfigProperties annotation
-// =================================================================================================
-== Injecting related properties through @ConfigProperties annotation
+// // =================================================================================================
+// // Injecting related properties through @ConfigProperties annotation
+// // =================================================================================================
+// == Injecting related properties through @ConfigProperties annotation
 
-MicroProfile Config 2.0 provides a way to aggregate configuration properties starting with the same prefix into a single property class through the `@ConfigProperties` annotation.
+// MicroProfile Config 2.0 provides a way to aggregate configuration properties starting with the same prefix into a single property class through the `@ConfigProperties` annotation.
 
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Create the `ConfigDetailsBean.java` class.#
-`src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java`
-----
+// [role="code_command hotspot file=0", subs="quotes"]
+// ----
+// #Create the `ConfigDetailsBean.java` class.#
+// `src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java`
+// ----
 
-// file 0
-ConfigDetailsBean.java
-[source, Java, linenums, role='code_column']
-----
-include::finish/src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java[]
-----
+// // file 0
+// ConfigDetailsBean.java
+// [source, Java, linenums, role='code_column']
+// ----
+// include::finish/src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java[]
+// ----
 
-Define a CDI bean for config properties which share the common prefix `io_openliberty_guides`.
+// Define a CDI bean for config properties which share the common prefix `io_openliberty_guides`.
 
-The [hotspot=ConfigProperties file=0]`@ConfigProperties` annotation retrieves the properties prefixed by `io_openliberty_guides` into a single property class called [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean`.
+// The [hotspot=ConfigProperties file=0]`@ConfigProperties` annotation retrieves the properties prefixed by `io_openliberty_guides` into a single property class called [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean`.
 
-To inject the bean annotated with `@ConfigProperties`, 
+// To inject the bean annotated with `@ConfigProperties`, 
 
-[role="code_command hotspot file=1", subs="quotes"]
-----
-#Replace the `InventoryConfig.java` class.#
-`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
-----
+// [role="code_command hotspot file=1", subs="quotes"]
+// ----
+// #Replace the `InventoryConfig.java` class.#
+// `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
+// ----
 
-// file 1
-InventoryConfig.java
-[source, Java, linenums, role='code_column']
-----
-include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
-----
+// // file 1
+// InventoryConfig.java
+// [source, Java, linenums, role='code_column']
+// ----
+// include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
+// ----
 
-The changes introduced here use the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations to inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class into the [hotspot file=1]`InventoryConfig` class.
+// The changes introduced here use the [hotspot=Inject file=1]`@Inject` and the [hotspot=ConfigProperties file=1]`@ConfigProperties` annotations to inject the [hotspot=ConfigDetailsBean file=0]`ConfigDetailsBean` property class into the [hotspot file=1]`InventoryConfig` class.
 
-// =================================================================================================
-// Running the application
-// =================================================================================================
+// // =================================================================================================
+// // Running the application
+// // =================================================================================================
 
-[role=command]
-include::{common-includes}/devmode-build.adoc[]
+// [role=command]
+// include::{common-includes}/devmode-build.adoc[]
 
-While the server is running, the following two microservices should be available to access:
+// While the server is running, the following two microservices should be available to access:
 
-* http://localhost:9080/system/properties
+// * http://localhost:9080/system/properties
 
-* http://localhost:9080/inventory/systems
+// * http://localhost:9080/inventory/systems
 
-Since you set the Config Profile to the `maintaining` environment, the following message displays when accessing both services: `... Service is currently down for maintenance ...`.
+// Since you set the Config Profile to the `maintaining` environment, the following message displays when accessing both services: `... Service is currently down for maintenance ...`.
 
-You can find the service that retrieves configuration information that is specific to this guide at the following location:
+// You can find the service that retrieves configuration information that is specific to this guide at the following location:
 
-* http://localhost:9080/config
+// * http://localhost:9080/config
 
-// file 0
-microprofile-config.properties
-[source, Properties, linenums, role='code_column']
-----
-include::finish/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
-Play with this application by changing configuration values for the properties in the Config Sources. Your changes are added dynamically, and you do not need to restart the server. Refresh the above URLs to see the dynamic changes.
-
-For example, delete or comment out property [hotspot=config-profile file=0]`mp.config.profile`, then try to access the two microservices again. Each service now returns a valid response.
-
-// =================================================================================================
-// Testing the application
-// =================================================================================================
-== Testing the application
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Create the `ConfigurationIT` class.#
-`src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java`
-----
-
-// file 0
-ConfigurationIT.java
-[source, Java, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java[]
-----
-
-// file 1
-microprofile-config.properties
-[source, Properties, linenums, role='code_column hide_tags=copyright']
-----
-include::finish/src/main/resources/META-INF/microprofile-config.properties[]
-----
-
+// // file 0
 // microprofile-config.properties
-// [source, properties, linenums, role='code_column']
+// [source, Properties, linenums, role='code_column']
 // ----
 // include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 // ----
 
-The integration test reads the value of the [hotspot=config-profile file=1]`mp.config.profile` configuration property in the `META-INF/microprofile-config.properties` to check the active Config Profile before running the test cases.
+// Play with this application by changing configuration values for the properties in the Config Sources. Your changes are added dynamically, and you do not need to restart the server. Refresh the above URLs to see the dynamic changes.
 
-The [hotspot=testConfigTechnicalSupport file=0]`testConfigTechnicalSupport()` test case checks the HTTP response of the `config/technicalSupport` endpoint.
+// For example, delete or comment out property [hotspot=config-profile file=0]`mp.config.profile`, then try to access the two microservices again. Each service now returns a valid response.
 
-The [hotspot=testInventoryServiceStatus file=0]`testInventoryServiceStatus()` checks the HTTP response of the `inventory` service. If [hotspot=config-profile file=1]`mp.config.profile` is set to `maintaining`, the service returns a Service Unavailable server error response code. Otherwise, the service returns a valid response.
+// // =================================================================================================
+// // Testing the application
+// // =================================================================================================
+// == Testing the application
 
-The [hotspot=testSystemServiceStatus file=0]`testSystemServiceStatus()` checks the HTTP response of the `system` service. If [hotspot=config-profile file=1]`mp.config.profile` is set to `maintaining`, the service returns a Service Unavailable server error response code. Otherwise, the service returns a valid response.
+// [role="code_command hotspot", subs="quotes"]
+// ----
+// #Create the `ConfigurationIT` class.#
+// `src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java`
+// ----
 
-In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, then you must have introduced a bug into the code. These tests run automatically as a part of the integration test suite.
+// // file 0
+// ConfigurationIT.java
+// [source, Java, linenums, role='code_column hide_tags=copyright']
+// ----
+// include::finish/src/test/java/it/io/openliberty/guides/config/ConfigurationIT.java[]
+// ----
 
-[role=command]
-include::{common-includes}/devmode-test.adoc[]
+// // file 1
+// microprofile-config.properties
+// [source, Properties, linenums, role='code_column hide_tags=copyright']
+// ----
+// include::finish/src/main/resources/META-INF/microprofile-config.properties[]
+// ----
 
-You see the following output:
+// // microprofile-config.properties
+// // [source, properties, linenums, role='code_column']
+// // ----
+// // include::finish/src/main/resources/META-INF/microprofile-config.properties[]
+// // ----
 
-[source, role="no_copy"]
-----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running it.io.openliberty.guides.config.ConfigurationIT
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.516 s - in it.io.openliberty.guides.config.ConfigurationIT
-Running it.io.openliberty.guides.system.SystemEndpointIT
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in it.io.openliberty.guides.system.SystemEndpointIT
-Running it.io.openliberty.guides.inventory.InventoryEndpointIT
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in it.io.openliberty.guides.inventory.InventoryEndpointIT
+// The integration test reads the value of the [hotspot=config-profile file=1]`mp.config.profile` configuration property in the `META-INF/microprofile-config.properties` to check the active Config Profile before running the test cases.
 
-Results:
+// The [hotspot=testConfigTechnicalSupport file=0]`testConfigTechnicalSupport()` test case checks the HTTP response of the `config/technicalSupport` endpoint.
 
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
-----
+// The [hotspot=testInventoryServiceStatus file=0]`testInventoryServiceStatus()` checks the HTTP response of the `inventory` service. If [hotspot=config-profile file=1]`mp.config.profile` is set to `maintaining`, the service returns a Service Unavailable server error response code. Otherwise, the service returns a valid response.
 
-If you run the test without specifying the [hotspot=config-profile file=1]`mp.config.profile` property, you will see warning and error messages which are expected and result from a request to a bad or an unknown hostname. This request is made in the `testUnknownHost()` test from the `InventoryEndpointIT` integration test.
+// The [hotspot=testSystemServiceStatus file=0]`testSystemServiceStatus()` checks the HTTP response of the `system` service. If [hotspot=config-profile file=1]`mp.config.profile` is set to `maintaining`, the service returns a Service Unavailable server error response code. Otherwise, the service returns a valid response.
 
-[role=command]
-include::{common-includes}/devmode-quit.adoc[]
+// In addition, a few endpoint tests have been provided for you to test the basic functionality of the `inventory` and `system` services. If a test failure occurs, then you must have introduced a bug into the code. These tests run automatically as a part of the integration test suite.
+
+// [role=command]
+// include::{common-includes}/devmode-test.adoc[]
+
+// You see the following output:
+
+// [source, role="no_copy"]
+// ----
+// -------------------------------------------------------
+//  T E S T S
+// -------------------------------------------------------
+// Running it.io.openliberty.guides.config.ConfigurationIT
+// Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.516 s - in it.io.openliberty.guides.config.ConfigurationIT
+// Running it.io.openliberty.guides.system.SystemEndpointIT
+// Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in it.io.openliberty.guides.system.SystemEndpointIT
+// Running it.io.openliberty.guides.inventory.InventoryEndpointIT
+// Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in it.io.openliberty.guides.inventory.InventoryEndpointIT
+
+// Results:
+
+// Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+// ----
+
+// If you run the test without specifying the [hotspot=config-profile file=1]`mp.config.profile` property, you will see warning and error messages which are expected and result from a request to a bad or an unknown hostname. This request is made in the `testUnknownHost()` test from the `InventoryEndpointIT` integration test.
+
+// [role=command]
+// include::{common-includes}/devmode-quit.adoc[]
 
 
-== Great work! You're done!
+// == Great work! You're done!
 
-You just built and tested a MicroProfile application with MicroProfile Config in Open Liberty.
+// You just built and tested a MicroProfile application with MicroProfile Config in Open Liberty.
 
-Feel free to try one of the related guides. They demonstrate new technologies that you can learn and expand on top what you built in this guide.
+// Feel free to try one of the related guides. They demonstrate new technologies that you can learn and expand on top what you built in this guide.
 
-include::{common-includes}/attribution.adoc[subs="attributes"]
+// include::{common-includes}/attribution.adoc[subs="attributes"]
