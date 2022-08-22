@@ -10,9 +10,11 @@
  *     IBM Corporation - Initial implementation
  *******************************************************************************/
 // end::copyright[]
+// tag::config-methods[]
 package io.openliberty.guides.inventory;
 
 import java.util.Properties;
+import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -23,8 +25,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import io.openliberty.guides.inventory.model.InventoryList;
-
 @RequestScoped
 @Path("systems")
 public class InventoryResource {
@@ -32,8 +32,10 @@ public class InventoryResource {
   @Inject
   InventoryManager manager;
 
+  // tag::config-injection[]
   @Inject
   InventoryConfig inventoryConfig;
+  // end::config-injection[]
 
   @GET
   @Path("{hostname}")
@@ -49,13 +51,16 @@ public class InventoryResource {
                        .build();
       }
 
-      // Add to inventory
       manager.add(hostname, props);
       return Response.ok(props).build();
     } else {
+      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently in maintenance. "
-                     + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
+                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
+                     + inventoryConfig.getDowntime() + " hours, from "
+                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
+                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
+                     + "Contact: " + inventoryConfig.getEmail() + "\" }")
                      .build();
     }
   }
@@ -66,8 +71,12 @@ public class InventoryResource {
     if (!inventoryConfig.isInMaintenance()) {
       return Response.ok(manager.list()).build();
     } else {
+      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently in maintenance. "
+                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
+                     + inventoryConfig.getDowntime() + " hours, from "
+                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
+                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
                      + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
                      .build();
     }
