@@ -328,7 +328,7 @@ MicroProfile Config 2.0 API now provides `OptinalInt`, `OptionalLong` and `Optio
 `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
 ----
 
-The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type [hotspot=downtime file=1]`OptinalInt`. 
+The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type `OptinalInt`. 
 
 Properties are optional when the annotation specify an optional default value. In this case, the `OptionalInt` Converter converts the value of property [hotspot=downtime file=0]`io_openliberty_guides.downtime` to `null` as the default value. This allows its value to be retrieve "optionally". That is, when the configuration property value is not found in any of the ConfigSources in the current runtime environment, an `Optional.empty` value will be returned instead of a `NoSuchElementException`. 
 
@@ -428,13 +428,7 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-// microprofile-config.properties
-// [source, properties, linenums, role='code_column']
-// ----
-// include::finish/src/main/resources/META-INF/microprofile-config.properties[]
-// ----
-
-The integration test reads the value of the [hotspot=config-profile file=1]`mp.config.profile` configuration property in the `META-INF/microprofile-config.properties` to check the active Config Profile before running the test cases.
+The integration test reads the value of the [hotspot=config-profile file=1]`mp.config.profile` configuration property in the `META-INF/microprofile-config.properties` to check the active Config Profile first before running the test cases.
 
 The [hotspot=testConfigTechnicalSupport file=0]`testConfigTechnicalSupport()` test case checks the HTTP response of the `config/technicalSupport` endpoint.
 

@@ -94,7 +94,7 @@ public class ConfigurationIT {
       "Response code not as expected.");
     }
   } 
-  // tag::testInventoryServiceStatus[]
+  // end::testInventoryServiceStatus[]
   
   @Test
   @Order(3)
@@ -111,7 +111,7 @@ public class ConfigurationIT {
       "Response code not as expected.");
     }
   } 
-  // tag::testSystemServiceStatus[]
+  // end::testSystemServiceStatus[]
 
   // tag::helpers[]
   // tag::javadoc[]
