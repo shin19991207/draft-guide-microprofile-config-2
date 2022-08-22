@@ -55,7 +55,8 @@ public class InventoryConfig {
 
   public List<Integer> getMaintenanceWindow() {
     // tag::optional-list-int[]
-    Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    Optional<List<Integer>> maintenanceWindow 
+      = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
     // end::optional-list-int[]
     if (maintenanceWindow.isPresent()) {
       return maintenanceWindow.get();
