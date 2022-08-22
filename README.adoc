@@ -124,7 +124,9 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
+A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. 
+
+Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
 === Externalizing property on Config Source level
 
@@ -149,7 +151,9 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source [hotspot file=1]`microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
+Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. 
+
+With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source [hotspot file=1]`microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
 // // =================================================================================================
 // // Working with Property Expressions
