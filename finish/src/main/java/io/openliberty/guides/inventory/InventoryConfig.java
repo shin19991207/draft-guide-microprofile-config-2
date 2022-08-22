@@ -29,7 +29,7 @@ public class InventoryConfig {
   @Inject
   Config config;
 
-   // tag::Inject[]
+  // tag::Inject[]
   @Inject
   // end::Inject[]
   // tag::ConfigProperties[]
