@@ -12,13 +12,13 @@
 // end::copyright[]
 package io.openliberty.guides.system;
 
-// CDI
+import java.util.List;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.GET;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 
-// JAX-RS
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -38,9 +38,13 @@ public class SystemResource {
     if (!systemConfig.isInMaintenance()) {
       return Response.ok(System.getProperties()).build();
     } else {
+      List<Integer> maintenanceWindow = systemConfig.getMaintenanceWindow();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("ERROR: Service is currently in maintenance. Contact: "
-                         + systemConfig.getEmail().toString())
+                     .entity("ERROR: Service is currently down for maintenance for "
+                     + systemConfig.getDowntime() + " hours, from " 
+                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
+                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
+                     + "Contact: " + systemConfig.getEmail())
                      .build();
     }
   }

@@ -12,34 +12,54 @@
 // end::copyright[]
 package io.openliberty.guides.system;
 
+import java.util.Optional;
+import java.util.List;
+import java.util.OptionalInt;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.Config;
+
+import io.openliberty.guides.config.ConfigDetailsBean;
 
 @RequestScoped
 public class SystemConfig {
 
-  // tag::config[]
   @Inject
-  @ConfigProperty(name = "io_openliberty_guides.system_inMaintenance")
-  private Boolean inMaintenance;
-  // end::config[]
+  @ConfigProperties
+  ConfigDetailsBean configDetails;
 
-  // tag::custom-converter[]
   @Inject
-  @ConfigProperty(name = "io_openliberty_guides.email")
-  private String email;
-  // end::custom-converter[]
+  Config config;
 
   public boolean isInMaintenance() {
-    return inMaintenance;
+    return configDetails.system_inMaintenance;
   }
 
-  // tag::getEmail[]
   public String getEmail() {
-    return email;
+    Optional<String> email = configDetails.email;
+    if (email.isPresent()) {
+      return email.get();
+    }
+    return null;
   }
-  // end::getEmail[]
+
+  public int getDowntime() {
+    OptionalInt downtime = configDetails.downtime;
+    if (downtime.isPresent()) {
+      return downtime.getAsInt();
+    }
+    return 0;
+  }
+
+  public List<Integer> getMaintenanceWindow() {
+    Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    if (maintenanceWindow.isPresent()) {
+      return maintenanceWindow.get();
+    }
+    return null;
+  }
 
 }

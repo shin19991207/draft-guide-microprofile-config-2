@@ -14,13 +14,11 @@ package io.openliberty.guides.system;
 
 import java.util.List;
 
-// CDI
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.GET;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 
-// JAX-RS
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
