@@ -34,7 +34,7 @@ You will learn how to externalize and inject static configuration properties for
 
 MicroProfile Config 2.0 is a major version release jam-packed with new features to help make building configurable microservices effortless.
 
-You will learn to switch between different project environment using specific set of configuration properties for each environment, embed config property values inside of other config property values, retrieve details about a given config property, retrieve multi-valued config property values as a List, and inject related config property values with a shared prefix into a CDI bean.
+You will learn to switch between different project environment using specific set of configuration properties for each environment, embed config property values inside of other config property values, retrieve details about a given config property, retrieve multi-valued config property values as a List, using the new built-in Converters, and inject related config property values with a shared prefix into a CDI bean.
 
 The application that you will be working with is an `inventory` service which stores the information about various JVMs running on different hosts. Whenever a request is made to the `inventory` service to retrieve the JVM system properties of a particular host, the `inventory` service will communicate with the `system` service on that host to get these system properties. You will add configuration properties to simulate if a service is down for maintenance.
 
