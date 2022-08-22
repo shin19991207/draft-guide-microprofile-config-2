@@ -66,75 +66,82 @@ include::finish/src/main/liberty/config/server.xml[]
 
 The MicroProfile Config 2.0 API is included in the MicroProfile 5.0 API artifact that is specified in your [hotspot file=0]`pom.xml` file. Look for the dependency with the [hotspot=microprofile file=0]`microprofile` artifact ID. This dependency provides a library that allows you to use the MicroProfile Config 2.0 API to externalize configurations for your microservices. The [hotspot=config file=1]`mpConfig` feature is also enabled in the [hotspot file=1]`src/main/liberty/config/server.xml` file, along with the [hotspot=cdi file=1]`cdi` feature to enable all the injection functionally.
 
-// Config Profiles allow configuration for different environments and project phases such as dev, testing, prod, etc. while only a single profile is active. The active Config Profile is specified via the property `mp.config.profile`, which can be set in any of the configuration sources. Once it is set, the corresponding set of configuration properties associated with the active profile are used. 
+Config Profiles allow configuration for different environments and project phases such as dev, testing, prod, etc. while only a single profile is active. The active Config Profile is specified via the property `mp.config.profile`, which can be set in any of the configuration sources. Once it is set, the corresponding set of configuration properties associated with the active profile are used. 
 
-// It can also be set at your application startup. The `finish` directory in the root of this guide contains the finished application. Try out the application in the maintenance mode by setting the Config Profile as `maintaining` when starting your application.
+It can also be set at your application startup. The `finish` directory in the root of this guide contains the finished application. Try out the application in the maintenance mode by setting the Config Profile as `maintaining` when starting your application.
 
-// // tag::runCommand[]
-// To try out the application, first go to the `finish` directory and run the following Maven goal to build the application and deploy it to Open Liberty:
+// tag::runCommand[]
+To try out the application, first go to the `finish` directory and run the following Maven goal to build the application and deploy it to Open Liberty:
 
-// [role='command']
-// ```
-// cd finish
-// mvn liberty:run -Dliberty.var.mp.config.profile="maintaining"
-// ```
+[role='command']
+```
+cd finish
+mvn liberty:run -Dliberty.var.mp.config.profile="maintaining"
+```
 
-// After you see the following message, your application server is ready:
+After you see the following message, your application server is ready:
 
-// [role="no_copy"]
-// ----
-// The defaultServer server is ready to run a smarter planet.
-// ----
-// // end::runCommand[]
+[role="no_copy"]
+----
+The defaultServer server is ready to run a smarter planet.
+----
+// end::runCommand[]
 
-// The `-Dliberty.var.mp.config.profile` argument sets a https://maven.apache.org/pom.html#Properties[Maven property^] which the [hotspot=liberty-maven-plugin file=0]`liberty-maven-plugin` https://github.com/scottkurz/ci.maven/blob/f3920800351b6d2c26e62a19008b68093afa48ea/docs/common-server-parameters.md#setting-liberty-configuration-with-maven-project-properties[uses to update the Liberty configuration^]. In this case, the `mp.config.profile property` is set to `maintaining`.
+The `-Dliberty.var.mp.config.profile` argument sets a https://maven.apache.org/pom.html#Properties[Maven property^] which the [hotspot=liberty-maven-plugin file=0]`liberty-maven-plugin` https://github.com/scottkurz/ci.maven/blob/f3920800351b6d2c26e62a19008b68093afa48ea/docs/common-server-parameters.md#setting-liberty-configuration-with-maven-project-properties[uses to update the Liberty configuration^]. In this case, the `mp.config.profile property` is set to `maintaining`.
 
-// You can access the following two microservices to test their availability:
+You can access the following two microservices to test their availability:
 
-// * http://localhost:9080/system/properties
+* http://localhost:9080/system/properties
 
-// * http://localhost:9080/inventory/systems 
+* http://localhost:9080/inventory/systems 
 
-// Both services returns the message `... Service is currently down for maintenance ...` as the application is started in the `maintaining` environment.
+Both services returns the message `... Service is currently down for maintenance ...` as the application is started in the `maintaining` environment.
 
-// [role=command]
-// include::{common-includes}/twyb-end.adoc[]
+[role=command]
+include::{common-includes}/twyb-end.adoc[]
 
-// // static guide instructions:
-// Now, navigate to the `start` directory to begin.
+// static guide instructions:
+Now, navigate to the `start` directory to begin.
 
-// [role=command]
-// include::{common-includes}/devmode-lmp33-start.adoc[]
+[role=command]
+include::{common-includes}/devmode-lmp33-start.adoc[]
 
-// // file 0
-// microprofile-config.properties
-// [source, Properties, linenums, role='code_column']
-// ----
-// include::finish/src/main/resources/META-INF/microprofile-config.properties[]
-// ----
+// file 2
+microprofile-config.properties
+[source, Properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config.properties[]
+----
 
-// The active Config Profile is specified as [hotspot=config-profile file=0]`maintaining` in the [hotspot file=0]`META-INF/microprofile-config.properties` property file, the default configuration source for an application that uses MicroProfile Config.
+The active Config Profile is specified as [hotspot=config-profile file=0]`maintaining` in the [hotspot file=2]`META-INF/microprofile-config.properties` property file, the default configuration source for an application that uses MicroProfile Config.
 
-// === Externalizing property on Config Source level
+=== Externalizing property on Config Source level
 
-// [role="code_command hotspot file=1", subs="quotes"]
-// ----
-// #Create the `microprofile-config-maintaining.properties` file.#
-// `src/main/resources/META-INF/microprofile-config-maintaining.properties`
-// ----
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `microprofile-config-maintaining.properties` file.#
+`src/main/resources/META-INF/microprofile-config-maintaining.properties`
+----
 
-// // file 1
-// microprofile-config-maintaining.properties
-// [source, properties, linenums, role='code_column hide_tags=role,tech-support,customer-support,email2,maintenanceWindow,downtime']
-// ----
-// include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
-// ----
+// file 0
+microprofile-config-maintaining.properties
+[source, properties, linenums, role='code_column hide_tags=role,tech-support,customer-support,email2,maintenanceWindow,downtime']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
+----
 
-// Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=1]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source `microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=1]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=1]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
+Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source `microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
-// === Externalizing property on Property level
+=== Externalizing property on Property level
 
-// A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
+// file 0
+microprofile-config.properties
+[source, Properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config.properties[]
+----
+
+A configuration property can be used at the property level by setting its name in the format: `%<mp.config.profile>.<original property name>`. Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
 // // =================================================================================================
 // // Working with Property Expressions
