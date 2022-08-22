@@ -297,7 +297,7 @@ InventoryConfig.java
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
-Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=optional-list-int file=1]`Optional<List<Integer>>` type is returned.
+Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=getOptionalValues file=1]`Optional<List<Integer>>` type is returned.
 
 You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
