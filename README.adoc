@@ -460,7 +460,7 @@ Results:
 Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
 ----
 
-If you run the test without specifying the [hotspot=config-profile file=1]`mp.config.profile` property, you will see warning and error messages which are expected and result from a request to a bad or an unknown hostname. This request is made in the `testUnknownHost()` test from the `InventoryEndpointIT` integration test.
+If you run the test without specifying the [hotspot=config-profile file=1]`mp.config.profile` property to `maintaining`, you will see warning and error messages which are expected and result from a request to a bad or an unknown hostname. This request is made in the `testUnknownHost()` test from the `InventoryEndpointIT` integration test.
 
 [role=command]
 include::{common-includes}/devmode-quit.adoc[]
