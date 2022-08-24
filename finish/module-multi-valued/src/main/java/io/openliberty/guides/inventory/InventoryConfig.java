@@ -34,7 +34,9 @@ public class InventoryConfig {
 
   @Inject
   @ConfigProperty(name = "io_openliberty_guides.email")
+  // tag::email[]
   private Optional<String> email;
+  // end::email[]
 
   // tag::config[]
   @Inject
@@ -56,7 +58,6 @@ public class InventoryConfig {
     return null;
   }
 
-  // tag::getCheckBackTime[]
   public List<Integer> getCheckBackTime() {
     // tag::getOptionalValues[]
     Optional<List<Integer>> checkBackTime 
@@ -67,6 +68,5 @@ public class InventoryConfig {
     }
     return null;
   }
-  // end::getCheckBackTime[]
 
 }

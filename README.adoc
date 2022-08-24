@@ -269,21 +269,38 @@ Configuration values are purely Strings. MicroProfile Config API has https://dow
 
 If a configuration property cannot be found in any of the config sources and there is neither default value nor property is not optional, `java.util.NoSuchElementException` will be thrown. You can use `Optional<T>` or `OptionalInt`, `OptionalDouble`, `OptionalLong` as the type to avoid such exception.
 
-[role="code_command hotspot file=0", subs="quotes"]
+// file 0
+microprofile-config-maintaining.properties
+[source, Properties, linenums, role='code_column hide_tags=email1']
+----
+include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
+----
+
+// file 1
+microprofile-config.properties
+[source, Properties, linenums, role='code_column']
+----
+include::finish/src/main/resources/META-INF/microprofile-config.properties[]
+----
+
+Note that property [hotspot=email2 file=0]`io_openliberty_guides.email` is defined only in the `maintaining` Config Profile and is not defined in any configuration sources in the default environment.
+
+[role="code_command hotspot file=2", subs="quotes"]
 ----
 #Replace the `InventoryConfig.java` class.#
 `src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
 ----
 
-// file 0
+// file 2
 InventoryConfig.java
 [source, Java, linenums, role='code_column hide_tags=getCheckBackTime']
 ----
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
+Inject property [hotspot=email2 file=1]`io_openliberty_guides.email` as an [hotspot=email file=0]`Optional` value. Contrary to natively injecting the configured value, this avoid `NoSuchElementException` to be thrown when running the application in the default environment where the value is missing.
 
-
+=== Injecting multi-valued config property using Config API
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -298,26 +315,7 @@ microprofile-config-maintaining.properties
 include::finish/src/main/resources/META-INF/microprofile-config-maintaining.properties[]
 ----
 
-
-
-
-
-[role="code_command hotspot file=0", subs="quotes"]
-----
-#Replace the `InventoryConfig.java` class.#
-`src/main/java/io/openliberty/guides/inventory/InventoryConfig.java`
-----
-
-The [hotspot=downtime file=0]`io_openliberty_guides.downtime` property is declared as type `OptinalInt`. 
-
-Properties are optional when the annotation specify an optional default value. In this case, the `OptionalInt` Converter converts the value of property [hotspot=downtime file=0]`io_openliberty_guides.downtime` to `null` as the default value. This allows its value to be retrieve "optionally". That is, when the configuration property value is not found in any of the ConfigSources in the current runtime environment, an `Optional.empty` value will be returned instead of a `NoSuchElementException`. 
-
-// =================================================================================================
-// Injecting multi-valued config property using Config API
-// =================================================================================================
-== Injecting multi-valued config property using Config API
-
-Note that property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow` is defined with multiple values, seperated by comma. 
+Note that property [hotspot=checkBackTime file=0]`io_openliberty_guides.checkBackTime` is defined with multiple values, seperated by comma. 
 
 To retrieve the values from this multi-valued config property as a List,
 
@@ -329,12 +327,12 @@ To retrieve the values from this multi-valued config property as a List,
 
 // file 1
 InventoryConfig.java
-[source, java, linenums, role='code_column hide_tags=inject-downtime,getDowntime']
+[source, java, linenums, role='code_column']
 ----
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
-Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=maintenanceWindow file=0]`io_openliberty_guides.maintenanceWindow`, an [hotspot=getOptionalValues file=1]`Optional<List<Integer>>` type is returned.
+Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=checkBackTime file=0]`io_openliberty_guides.checkBackTime`, an [hotspot=getOptionalValues file=1]`Optional<List<Integer>>` type is returned.
 
 You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
