@@ -38,13 +38,12 @@ public class SystemResource {
     if (!systemConfig.isInMaintenance()) {
       return Response.ok(System.getProperties()).build();
     } else {
-      List<Integer> maintenanceWindow = systemConfig.getMaintenanceWindow();
+      List<Integer> checkBackTime = systemConfig.getCheckBackTime();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("ERROR: Service is currently down for maintenance for "
-                     + systemConfig.getDowntime() + " hours, from " 
-                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
-                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
-                     + "Contact: " + systemConfig.getEmail())
+                     .entity("{ \"error\" : \"Service is currently down for maintenance. "
+                     + "Please check back at " 
+                     + checkBackTime.get(0) + ":" + checkBackTime.get(1) + " UTC. "
+                     + "Contact: " + systemConfig.getEmail() + "\" }")
                      .build();
     }
   }

@@ -53,23 +53,15 @@ public class InventoryConfig {
     return null;
   }
 
-  public List<Integer> getMaintenanceWindow() {
-    // tag::optional-list-int[]
-    Optional<List<Integer>> maintenanceWindow 
-      = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
-    // end::optional-list-int[]
-    if (maintenanceWindow.isPresent()) {
-      return maintenanceWindow.get();
+  public List<Integer> getCheckBackTime() {
+    // tag::getOptionalValues[]
+    Optional<List<Integer>> checkBackTime 
+      = config.getOptionalValues("io_openliberty_guides.checkBackTime", Integer.class);
+    // end::getOptionalValues[]
+    if (checkBackTime.isPresent()) {
+      return checkBackTime.get();
     }
     return null;
-  }
-
-  public int getDowntime() {
-    OptionalInt downtime = configDetails.downtime;
-    if (downtime.isPresent()) {
-      return downtime.getAsInt();
-    }
-    return 0;
   }
   
 }

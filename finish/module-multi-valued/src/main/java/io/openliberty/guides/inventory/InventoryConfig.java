@@ -36,14 +36,6 @@ public class InventoryConfig {
   @ConfigProperty(name = "io_openliberty_guides.email")
   private Optional<String> email;
 
-  // tag::inject-downtime[]
-  @Inject
-  @ConfigProperty(name = "io_openliberty_guides.downtime")
-  // tag::downtime[]
-  private OptionalInt downtime;
-  // end::downtime[]
-  // end::inject-downtime[]
-
   // tag::config[]
   @Inject
   Config config;
@@ -64,24 +56,17 @@ public class InventoryConfig {
     return null;
   }
 
-  public List<Integer> getMaintenanceWindow() {
+  // tag::getCheckBackTime[]
+  public List<Integer> getCheckBackTime() {
     // tag::getOptionalValues[]
-    Optional<List<Integer>> maintenanceWindow 
-      = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
+    Optional<List<Integer>> checkBackTime 
+      = config.getOptionalValues("io_openliberty_guides.checkBackTime", Integer.class);
     // end::getOptionalValues[]
-    if (maintenanceWindow.isPresent()) {
-      return maintenanceWindow.get();
+    if (checkBackTime.isPresent()) {
+      return checkBackTime.get();
     }
     return null;
   }
-
-  // tag::getDowntime[]
-  public int getDowntime() {
-    if (downtime.isPresent()) {
-      return downtime.getAsInt();
-    }
-    return 0;
-  }
-  // end::getDowntime[]
+  // end::getCheckBackTime[]
 
 }

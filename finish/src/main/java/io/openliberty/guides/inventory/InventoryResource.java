@@ -54,12 +54,11 @@ public class InventoryResource {
       manager.add(hostname, props);
       return Response.ok(props).build();
     } else {
-      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
+      List<Integer> checkBackTime = inventoryConfig.getCheckBackTime();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
-                     + inventoryConfig.getDowntime() + " hours, from "
-                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
-                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
+                     .entity("{ \"error\" : \"Service is currently down for maintenance. "
+                     + "Please check back at " 
+                     + checkBackTime.get(0) + ":" + checkBackTime.get(1) + " UTC. "
                      + "Contact: " + inventoryConfig.getEmail() + "\" }")
                      .build();
     }
@@ -71,13 +70,12 @@ public class InventoryResource {
     if (!inventoryConfig.isInMaintenance()) {
       return Response.ok(manager.list()).build();
     } else {
-      List<Integer> maintenanceWindow = inventoryConfig.getMaintenanceWindow();
+      List<Integer> checkBackTime = inventoryConfig.getCheckBackTime();
       return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                     .entity("{ \"error\" : \"Service is currently down for maintenance for "
-                     + inventoryConfig.getDowntime() + " hours, from "
-                     + maintenanceWindow.get(0).toString() + ":00 UTC to " 
-                     + maintenanceWindow.get(1).toString() + ":00 UTC. " 
-                     + "Contact: " + inventoryConfig.getEmail().toString() + "\" }")
+                     .entity("{ \"error\" : \"Service is currently down for maintenance. "
+                     + "Please check back at " 
+                     + checkBackTime.get(0) + ":" + checkBackTime.get(1) + " UTC. "
+                     + "Contact: " + inventoryConfig.getEmail() + "\" }")
                      .build();
     }
   }

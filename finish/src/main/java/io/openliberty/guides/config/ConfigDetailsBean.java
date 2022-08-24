@@ -30,7 +30,6 @@ public class ConfigDetailsBean {
     public boolean inventory_inMaintenance;
     public boolean system_inMaintenance;
     public Optional<String> email;
-    public Optional<List<Integer>> maintenanceWindow;
-    public OptionalInt downtime;
+    public Optional<List<Integer>> checkBackTime;
 }
 // end::ConfigDetailsBean[]

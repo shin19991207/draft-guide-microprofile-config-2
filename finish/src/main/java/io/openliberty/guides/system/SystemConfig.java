@@ -46,18 +46,13 @@ public class SystemConfig {
     return null;
   }
 
-  public int getDowntime() {
-    OptionalInt downtime = configDetails.downtime;
-    if (downtime.isPresent()) {
-      return downtime.getAsInt();
-    }
-    return 0;
-  }
-
-  public List<Integer> getMaintenanceWindow() {
-    Optional<List<Integer>> maintenanceWindow = config.getOptionalValues("io_openliberty_guides.maintenanceWindow", Integer.class);
-    if (maintenanceWindow.isPresent()) {
-      return maintenanceWindow.get();
+  public List<Integer> getCheckBackTime() {
+    // tag::getOptionalValues[]
+    Optional<List<Integer>> checkBackTime 
+      = config.getOptionalValues("io_openliberty_guides.checkBackTime", Integer.class);
+    // end::getOptionalValues[]
+    if (checkBackTime.isPresent()) {
+      return checkBackTime.get();
     }
     return null;
   }
