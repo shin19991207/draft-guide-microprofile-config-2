@@ -153,11 +153,11 @@ Config Profile properties can be used at the Config Source level by providing a 
 With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source [hotspot file=1]`microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
 // =================================================================================================
-// Working with Property Expressions
+// Working with property expressions
 // =================================================================================================
-== Working with Property Expressions
+== Working with property expressions
 
-The value of a config property may contain an expression corresponding to another config property. Property Expressions provide a way to embed expression segments in property values using the `${}` sequence.
+The value of a config property may contain an expression corresponding to another config property. Property expressions provide a way to embed expression segments in property values using the `${}` sequence.
 
 Additionally, you can implement expressions with the following syntax:
 
