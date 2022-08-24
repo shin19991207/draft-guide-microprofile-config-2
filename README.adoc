@@ -126,7 +126,7 @@ A configuration property can be used at the property level by setting its name i
 
 Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
-=== Externalizing property on Config Source level
+=== Externalizing property on ConfigSource level
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -148,9 +148,9 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Config Profile properties can be used at the Config Source level by providing a config source file under the META-INF folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. 
+Config Profile properties can be used at the ConfigSource level by providing a configuration source file under the `META-INF` folder on the classpath with the name formatted as `microprofile-config-<mp.config.profile>.properties`. 
 
-With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default config source [hotspot file=1]`microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
+With `mp.config.profile` set to `maintaining`, the file [hotspot file=0]`microprofile-config-maintaining.properties` would be loaded be loaded on top of the default ConfigSource [hotspot file=1]`microprofile-config.properties` file. In this case, the [hotspot=inventory-inMaintenance file=0]`io_openliberty_guides.inventory_inMaintenance` property from [hotspot file=0]`microprofile-config-maintaining.properties` would take precedence, and thus is set to `true`.
 
 // =================================================================================================
 // Working with property expressions
@@ -223,7 +223,7 @@ server.xml
 include::finish/src/main/liberty/config/server.xml[]
 ----
 
-Note that the `io_openliberty_guides.technical_support` property is defined in multiple config sources in the application as listed as follows:
+Note that the `io_openliberty_guides.technical_support` property is defined in multiple configuration sources in the application as listed as follows:
 
 * [hotspot=tech-support file=0]`microprofile-config-maintaining.properties`
 
@@ -252,9 +252,9 @@ Inject the [hotspot=tech-support file=4]`io_openliberty_guides.technical_support
 
 The https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/ConfigValue.html[ConfigValue^] metadata object holds additional information after the lookup of a config property, where you can retrieve with the get methods defined in the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/[Javadoc^].
 
-For example, the [hotspot=getSourceName file=4]`getSourceName()` method determines which config source has the highest ordinal for property `io_openliberty_guides.technical_support` and the [hotspot=getSourceOrdinal file=4]`getSourceOrdinal()` returns the ordinal value of the config source that loaded the property lookup.
+For example, the [hotspot=getSourceName file=4]`getSourceName()` method determines which ConfigSource has the highest ordinal for property `io_openliberty_guides.technical_support` and the [hotspot=getSourceOrdinal file=4]`getSourceOrdinal()` returns the ordinal value of the ConfigSource that loaded the property lookup.
 
-Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning config source for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning config source and observe the changes at http://localhost:9080/config.
+Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
 
 // =================================================================================================
 // Injecting configuration properties with the proper converter
@@ -263,7 +263,7 @@ Now point your browser to http://localhost:9080/config/technicalSupport to deter
 
 Configuration values are purely Strings. MicroProfile Config API has https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in converters^] that automatically converts configured Strings into target types such as `int`, `Integer`, `boolean`, `Boolean`, `float`, `Float`, `double` and `Double`, as well as specialized Optional classes such as `OptinalInt`, `OptionalLong` and `OptionalDouble`.
 
-If a configuration property cannot be found in any of the config sources and there is neither default value nor property is not optional, `java.util.NoSuchElementException` will be thrown. You can use `Optional<T>` or `OptionalInt`, `OptionalDouble`, `OptionalLong` as the type to avoid such exception.
+If a configuration property cannot be found in any of the ConfigSources and there is neither default value nor property is not optional, `java.util.NoSuchElementException` will be thrown. You can use `Optional<T>` or `OptionalInt`, `OptionalDouble`, `OptionalLong` as the type to avoid such exception.
 
 // file 0
 microprofile-config-maintaining.properties
@@ -399,7 +399,7 @@ microprofile-config.properties
 include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 ----
 
-Play with this application by changing configuration values for the properties in the Config Sources. Your changes are added dynamically, and you do not need to restart the server. Refresh the above URLs to see the dynamic changes.
+Play with this application by changing configuration values for the properties in the ConfigSources. Your changes are added dynamically, and you do not need to restart the server. Refresh the above URLs to see the dynamic changes.
 
 For example, delete or comment out property [hotspot=config-profile file=0]`mp.config.profile`, then try to access the two microservices again. Each service now returns a valid response.
 
