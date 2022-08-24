@@ -60,7 +60,9 @@ public class ConfigResource {
     // tag::getSourceName[]
     String sourceName = technicalSupport_configValue.getSourceName();
     // end::getSourceName[]
+    // tag::getSourceOrdinal[]
     int sourceOrdinal = technicalSupport_configValue.getSourceOrdinal();
+    // end::getSourceOrdinal[]
     String value = technicalSupport_configValue.getValue();
     return builder.add("SourceName", sourceName)
                   .add("SourceOrdinal", sourceOrdinal)

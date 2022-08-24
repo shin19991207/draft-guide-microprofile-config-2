@@ -32,7 +32,7 @@ Explore how to externalize configuration using MicroProfile Config and configure
 == What you'll learn
 You will learn how to configure multiple environments by providing specific set of configuration properties for each environment with Config Profile. You will also explore the features to externalize your microservice's configuration properties.
 
-You will learn to embed config property values inside of other config property values, retrieve details about a given config property, retrieve multi-valued config property values as a List, and inject related config property values with a shared prefix into a CDI bean.
+You will learn to embed config property values inside of other config property values, retrieve details about a given config property, inject multi-valued config property values as a List, and inject related config property values with a shared prefix into a CDI bean.
 
 The application that you will be working with is an `inventory` service which stores the information about various JVMs running on different hosts. Whenever a request is made to the `inventory` service to retrieve the JVM system properties of a particular host, the `inventory` service will communicate with the `system` service on that host to get these system properties. You will add configuration properties to simulate if a service is down for maintenance.
 
@@ -93,7 +93,7 @@ You can access the following two microservices to test their availability:
 
 * http://localhost:9080/inventory/systems 
 
-Since you started the application in the `maintaining` environment, both services return the message `... Service is currently down for maintenance ...`.
+Since you started the application in the `maintaining` environment, both services return the message `Service is currently down for maintenance.`
 
 [role=command]
 include::{common-includes}/twyb-end.adoc[]
@@ -223,9 +223,7 @@ server.xml
 include::finish/src/main/liberty/config/server.xml[]
 ----
 
-Note that the `io_openliberty_guides.technical_support` property is defined in multiple different config sources in the application as listed as follows:
-
-Note that the following five config sources all contain the `io_openliberty_guides.technical_support` property:
+Note that the `io_openliberty_guides.technical_support` property is defined in multiple config sources in the application as listed as follows:
 
 * [hotspot=tech-support file=0]`microprofile-config-maintaining.properties`
 
@@ -239,26 +237,24 @@ To figure out where the value of property `io_openliberty_guides.technical_suppo
 
 [role="code_command hotspot file=4", subs="quotes"]
 ----
-#Replace the `ConfigResource.java` file.#
+#Replace the `ConfigResource.java` class.#
 `src/main/java/io/openliberty/guides/config/ConfigResource.java`
 ----
 
 // file 4
 ConfigResource.java
-[source, java, linenums, role='code_column']
+[source, Java, linenums, role='code_column']
 ----
 include::finish/src/main/java/io/openliberty/guides/config/ConfigResource.java[]
 ----
 
-The ConfigValue holds additional information after the lookup of a configuration property.
+Inject the [hotspot=tech-support file=4]`io_openliberty_guides.technical_support` property as usual, only this time define the type as `ConfigValue`.
 
-To use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/ConfigValue.html[ConfigValue API class^], inject the [hotspot=tech-support file=4]`io_openliberty_guides.technical_support` property as usual, only this time define the type as `ConfigValue`.
+The https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/ConfigValue.html[ConfigValue^] metadata object holds additional information after the lookup of a config property, where you can retrieve with the get methods defined in the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/[Javadoc^].
 
-The `ConfigValue` holds additional information after the lookup of a config property, where you can retrieve with the get methods defined in the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/[Javadoc^].
+For example, the [hotspot=getSourceName file=4]`getSourceName()` method determines which config source has the highest ordinal for property `io_openliberty_guides.technical_support` and the [hotspot=getSourceOrdinal file=4]`getSourceOrdinal()` returns the ordinal value of the config source that loaded the property lookup.
 
-For example, the [hotspot=getConfigSource file=4]`getConfigSource()` method determines which ConfigSource has the highest ordinal for property `io_openliberty_guides.technical_support` by calling the [hotspot=getSourceName file=4]`getSourceName()` method.
-
-Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
+Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning config source for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning config source and observe the changes at http://localhost:9080/config.
 
 // =================================================================================================
 // Injecting configuration properties with the proper converter
@@ -298,7 +294,7 @@ InventoryConfig.java
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
-Inject property [hotspot=email2 file=1]`io_openliberty_guides.email` as an [hotspot=email file=0]`Optional` value. Contrary to natively injecting the configured value, this avoid `NoSuchElementException` to be thrown when running the application in the default environment where the value is missing.
+Inject property [hotspot=email2 file=0]`io_openliberty_guides.email` as an [hotspot=email file=2]`Optional` value. Contrary to natively injecting the configured value, this avoid `NoSuchElementException` to be thrown when running the application in the default environment where the value is missing.
 
 === Injecting multi-valued config property using Config API
 
@@ -332,7 +328,7 @@ InventoryConfig.java
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
 
-Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=checkBackTime file=0]`io_openliberty_guides.checkBackTime`, an [hotspot=getOptionalValues file=1]`Optional<List<Integer>>` type is returned.
+Inject a [hotspot=config file=1]`Config` instance to use the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html[Config API^] methods. The [hotspot=getOptionalValues file=1]`getOptionalValues()` method returns the resolved property values for the specified `propertyName` with the specified `propertyType`. In this case, when retrieving property [hotspot=checkBackTime file=0]`io_openliberty_guides.checkBackTime`, an `Optional<List<Integer>>` type is returned.
 
 You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
@@ -390,7 +386,7 @@ While the server is running, the following two microservices should be available
 
 * http://localhost:9080/inventory/systems
 
-Since you set the Config Profile to the `maintaining` environment, the following message displays when accessing both services: `... Service is currently down for maintenance ...`.
+Since you set the Config Profile to the `maintaining` environment, the following message displays when accessing both services: `Service is currently down for maintenance.`
 
 You can find the service that retrieves configuration information that is specific to this guide at the following location:
 
