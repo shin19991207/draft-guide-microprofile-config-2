@@ -243,7 +243,7 @@ To figure out where the value of property `io_openliberty_guides.technical_suppo
 
 // file 4
 ConfigResource.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/src/main/java/io/openliberty/guides/config/ConfigResource.java[]
 ----
@@ -289,7 +289,7 @@ Note that property [hotspot=email2 file=0]`io_openliberty_guides.email` is defin
 
 // file 2
 InventoryConfig.java
-[source, Java, linenums, role='code_column hide_tags=getCheckBackTime']
+[source, Java, linenums, role='code_column hide_tags=getCheckBackTime,copyright']
 ----
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
@@ -323,7 +323,7 @@ To retrieve the values from this multi-valued config property as a List,
 
 // file 1
 InventoryConfig.java
-[source, java, linenums, role='code_column']
+[source, java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
@@ -347,7 +347,7 @@ With Microprofile Config, you can aggregate configuration properties starting wi
 
 // file 0
 ConfigDetailsBean.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/src/main/java/io/openliberty/guides/config/ConfigDetailsBean.java[]
 ----
@@ -366,7 +366,7 @@ To inject the bean annotated with `@ConfigProperties`,
 
 // file 1
 InventoryConfig.java
-[source, Java, linenums, role='code_column']
+[source, Java, linenums, role='code_column hide_tags=copyright']
 ----
 include::finish/src/main/java/io/openliberty/guides/inventory/InventoryConfig.java[]
 ----
