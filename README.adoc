@@ -113,7 +113,7 @@ include::finish/src/main/resources/META-INF/microprofile-config.properties[]
 
 The active Config Profile is specified as [hotspot=config-profile file=2]`maintaining` in the [hotspot file=2]`META-INF/microprofile-config.properties` property file, the default configuration source for an application that uses MicroProfile Config.
 
-=== Externalizing property on Property level
+=== Configuring on property level
 
 // file 0
 microprofile-config.properties
@@ -126,7 +126,7 @@ A configuration property can be used at the property level by setting its name i
 
 Navigate to the [hotspot file=0]`microprofile-config.properties` property file. With `mp.config.profile` set to `maintaining`, retrieving the config value for `io_openliberty_guides.system_inMaintenance` would use the config property [hotspot=system-inMaintenance file=0]`%maintaining.io_openliberty_guides.system_inMaintenance`. The value of the property would resolve to `true`.
 
-=== Externalizing property on ConfigSource level
+=== Configuring on ConfigSource level
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
