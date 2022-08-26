@@ -12,9 +12,8 @@
 // end::copyright[]
 package io.openliberty.guides.config;
 
-import java.util.Optional;
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.Optional;
 
 import jakarta.enterprise.context.Dependent;
 

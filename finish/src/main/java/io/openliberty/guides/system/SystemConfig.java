@@ -12,13 +12,10 @@
 // end::copyright[]
 package io.openliberty.guides.system;
 
-import java.util.Optional;
 import java.util.List;
-import java.util.OptionalInt;
-
+import java.util.Optional;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 import org.eclipse.microprofile.config.Config;
 
