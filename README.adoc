@@ -7,7 +7,7 @@
 //   IBM Corporation
 :projectid: microprofile-config-profile
 :page-layout: guide-multipane
-:page-duration: 20 minutes
+:page-duration: 30 minutes
 :page-releasedate: 2018-03-09
 :page-description: Explore how to externalize configuration using MicroProfile Config and configure microservices for different environments with MicroProfile Config Profile.
 :page-tags: ['MicroProfile']
