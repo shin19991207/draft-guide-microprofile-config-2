@@ -44,9 +44,9 @@ The application that you will be working with is an `inventory` service which st
 include::{common-includes}/gitclone.adoc[]
 
 // =================================================================================================
-// Configuring microservices with multiple Config Profiles
+// Adding Config Profile to microservices
 // =================================================================================================
-== Configuring microservices with multiple Config Profiles
+== Adding Config Profile to microservices
 
 // file 0
 pom.xml
@@ -191,9 +191,9 @@ Try changing the configuration value for property [hotspot=role file=0]`role` in
 When you are finished trying out changing this configuration, change the value of property [hotspot=role file=0]`role` back to `technicalSupport`.
 
 // =================================================================================================
-// Injecting configuration using the ConfigValue metadata object
-// =================================================================================================
-== Injecting configuration using the ConfigValue metadata object
+// Injecting configuration with ConfigValue API
+// ===============================================i==================================================
+== Injecting configuration with ConfigValue API
 
 // file 0
 microprofile-config-maintaining.properties
@@ -257,9 +257,9 @@ For example, the [hotspot=getSourceName file=4]`getSourceName()` method determin
 Now point your browser to http://localhost:9080/config/technicalSupport to determine the winning ConfigSource for property `io_openliberty_guides.technical_support`. Try changing the value of property `io_openliberty_guides.technical_support` in the winning ConfigSource and observe the changes at http://localhost:9080/config.
 
 // =================================================================================================
-// Injecting configuration properties with the proper converter
+// Injecting configuration with proper converter
 // =================================================================================================
-== Injecting configuration properties with the proper converter
+== Injecting configuration with proper converter
 
 Configuration values are purely Strings. MicroProfile Config API has https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/spi/Converter.html#built_in_converters[built-in converters^] that automatically converts configured Strings into target types such as `int`, `Integer`, `boolean`, `Boolean`, `float`, `Float`, `double` and `Double`, as well as specialized Optional classes such as `OptinalInt`, `OptionalLong` and `OptionalDouble`.
 
@@ -296,7 +296,7 @@ include::finish/module-multi-valued/src/main/java/io/openliberty/guides/inventor
 
 Inject property [hotspot=email2 file=0]`io_openliberty_guides.email` as an [hotspot=email file=2]`Optional` value. Contrary to natively injecting the configured value, this avoid `NoSuchElementException` to be thrown when running the application in the default environment where the value is missing.
 
-=== Injecting multi-valued config property using Config API
+=== Injecting multi-valued configuration using Config API
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -333,9 +333,9 @@ Inject a [hotspot=config file=1]`Config` instance to use the https://download.ec
 You can also retrieve values natively, without Optionals, using the https://download.eclipse.org/microprofile/microprofile-config-2.0/apidocs/org/eclipse/microprofile/config/Config.html#getValues-java.lang.String-java.lang.Class-[Config.getValues()^] method.
 
 // =================================================================================================
-// Injecting related properties through @ConfigProperties annotation
+// Injecting configuration through @ConfigProperties annotation
 // =================================================================================================
-== Injecting related properties through @ConfigProperties annotation
+== Injecting configuration through @ConfigProperties annotation
 
 With Microprofile Config, you can aggregate configuration properties starting with the same prefix into a single property class through the `@ConfigProperties` annotation.
 
