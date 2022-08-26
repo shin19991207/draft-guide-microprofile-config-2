@@ -17,6 +17,6 @@
 
   <variable name="io_openliberty_guides.technicalSupport" value="john" />
 
-  <webApplication location="guide-microprofile-config-2.war"
+  <webApplication location="guide-microprofile-config-profile.war"
     contextRoot="/" />
 </server>
